@@ -1,0 +1,28 @@
+{
+  "name": "popup",
+  "version": "0.0.0",
+  "description": "DX popup component",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node ./build-config.js",
+    "test": "karma start",
+    "install": "bower install"
+  },
+  "author": "devexperts",
+  "license": "MPL-2",
+  "devDependencies": {
+    "babel": "^5.4.4",
+    "babel-core": "^5.4.7",
+    "bower": "^1.4.1",
+    "es6-module-loader": "^0.16.6",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.32",
+    "karma-babel-preprocessor": "^5.1.0",
+    "karma-jasmine": "^0.3.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-systemjs": "^0.4.0",
+    "phantomjs-polyfill": "0.0.1",
+    "system-bower": "^0.2.0",
+    "systemjs": "^0.16.11"
+  }
+}
