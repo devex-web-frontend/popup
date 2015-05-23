@@ -7,7 +7,7 @@ function normalizeArgs(...args) {
 	let result = {};
 
 	if (args.length === 2) {
-		result[args[0]] = args;
+		result[args[0]] = args[1];
 	}
 
 	if (args.length === 1 && isObject(args[0])) {
@@ -26,7 +26,7 @@ class Storage extends Emitter {
 	_notify(newProps, oldState) {
 		let newState = this.getModelState();
 
-		newProps.forEach(key => {
+		Object.keys(newProps).forEach(key => {
 			let newValue = newProps[key];
 			let oldValue = oldState[key];
 

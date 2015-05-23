@@ -1,7 +1,7 @@
 //import eventEmitter from 'eventEmitter';
 //let EventEmitter = window.EventEmitter;
 
-import Storage from './Storage';
+import Storage from '../Storage/Storage';
 
 class Popup extends Storage {
 	constructor(...args) {
