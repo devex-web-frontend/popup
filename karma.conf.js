@@ -25,11 +25,11 @@ module.exports = function(config) {
 
     coverageReporter: {
       reporters: [
-        {type: 'html', dir:'coverage/'},
+        {type: 'html', dir: 'coverage/'},
         {type: 'text-summary'}
       ],
 
-      instrumenters: { isparta : require('isparta') },
+      instrumenters: {isparta: require('isparta')},
       instrumenter: {
         '**/*.js': 'isparta'
       }

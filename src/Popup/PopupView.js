@@ -10,4 +10,4 @@ export default {
 	say() {
 		model.sayHi();
 	}
-}
+};

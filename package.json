@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start",
-    "install": "jspm install"
+    "install": "jspm install",
+    "lint": "eslint --ext .js,.jsx ."
   },
   "author": "devexperts",
   "license": "MPL-2",
   "devDependencies": {
     "core-js": "^0.9.12",
+    "eslint": "^0.21.2",
     "isparta": "^3.0.3",
     "jasmine-core": "^2.3.4",
     "jspm": "^0.15.6",

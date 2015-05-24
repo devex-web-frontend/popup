@@ -35,7 +35,7 @@ class Storage extends Emitter {
 			}
 		});
 
-		//TODO: don't fire this event if state hasn't changed (should be implemented after object-array-utlis moved to es6)
+		//TODO: don't fire this event if state hasn't changed (should be implemented after object-array-utils moved to es6)
 		this.emitSync(Storage.E_CHANGED, newState);
 	}
 

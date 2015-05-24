@@ -115,7 +115,7 @@ describe('Storage', () => {
 				test: 'some',
 				one: 'test',
 				notFound: undefined
-			})
+			});
 		});
 	});
 	describe('#remove', () => {
