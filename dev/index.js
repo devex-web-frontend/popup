@@ -6,5 +6,5 @@ let popup = new Popup();
 
 view.say();
 console.log('loaded!!!');
-console.log(popup.getModelState());
+console.log(popup.getState());
 window.VV = view;

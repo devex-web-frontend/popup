@@ -20,11 +20,11 @@ function normalizeArgs(...args) {
 class Storage extends Emitter {
 	constructor() {
 		super();
-		this.model = {};
+		this._state = {};
 	}
 
 	_notify(newProps, oldState) {
-		let newState = this.getModelState();
+		let newState = this.getState();
 
 		Object.keys(newProps).forEach(key => {
 			let newValue = newProps[key];
@@ -35,30 +35,46 @@ class Storage extends Emitter {
 			}
 		});
 
+		//TODO: don't fire this event if state hasn't changed (should be implemented after object-array-utlis moved to es6)
 		this.emitSync(Storage.E_CHANGED, newState);
 	}
 
 	set(...args) {
 		let props = normalizeArgs(...args);
-		let oldState = this.getModelState();
+		let oldState = this.getState();
 
 		Object.keys(props).forEach(key => {
-			this.model[key] = props[key];
+			this._state[key] = props[key];
 		});
 
 		this._notify(props, oldState);
 	}
 
-	get(key) {
-		return this.model[key];
+	get(...keys) {
+		return (keys.length === 1) ?
+			this._state[keys[0]]
+			:
+			keys.reduce((acc, key) => {
+				acc[key] = this._state[key];
+				return acc;
+			}, {});
 	}
 
-	remove(key) {
-		delete this.model[key];
+	remove(...keys) {
+		let oldState = this.getState();
+
+		keys.forEach((key) => {
+			delete this._state[key];
+		});
+
+		this._notify(keys.reduce((acc, key) => {
+			acc[key] = undefined;
+			return acc;
+		}, {}), oldState);
 	}
 
-	getModelState() {
-		return Object.assign({}, this.model);
+	getState() {
+		return Object.assign({}, this._state);
 	}
 }
 
