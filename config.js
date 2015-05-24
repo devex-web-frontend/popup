@@ -18,6 +18,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.4.7",
     "core-js": "npm:core-js@0.9.12",
     "emitter": "github:jhermsmeier/emitter.js@1.5.2",
+    "interact": "github:taye/interact.js@1.2.4",
     "github:jspm/nodelibs-process@0.1.1": {
       "process": "npm:process@0.10.1"
     },

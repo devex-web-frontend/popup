@@ -10,8 +10,75 @@
 			console.log(arguments);
 		});
 	</script>
+
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+		}
+
+		.popup--window {
+			border: 2px solid #000;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+		.popup--header {
+			background: silver;
+		}
+
+		.popup-message .popup--window {
+			width: 400px;
+		}
+
+		.popup-visible {
+			display: block;
+		}
+
+		.popup-hidden {
+			display: none;
+		}
+
+	</style>
 </head>
 <body>
+	<section class="popup popup-message popup-hidden">
+		<div class="popup--window">
+			<header data-popup-drag-trigger class="popup--header">
+				<h6 class="popup--title">Header</h6>
+				<span data-popup-close class="popup--close">×</span>
+			</header>
 
+
+			<div class="popup--content">
+				<div class="stateMachineMessage">
+					<p class="status">Phone Validated</p>
+
+
+					<p>Here is some text about what's happening in Cosmos.</p>
+					<p>Do you want do do smth?</p>
+				</div>
+
+			</div>
+
+
+			<footer class="popup--footer">
+				<div data-popup-close class="popup--buttons">
+					<button class="button  popup--close" type="button"><span>Ok</span></button>
+				</div>
+
+			</footer>
+
+		</div>
+	</section>
+<button id="showPopup">show popup</button>
 </body>
 </html>

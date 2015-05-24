@@ -26,7 +26,8 @@
   "jspm": {
     "directories": {},
     "dependencies": {
-      "emitter": "github:jhermsmeier/emitter.js@^1.5.2"
+      "emitter": "github:jhermsmeier/emitter.js@^1.5.2",
+      "interact": "github:taye/interact.js@^1.2.4"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.1.13",
