@@ -11,7 +11,7 @@ describe('#set', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 
-	it('should not fire Storage.E_CHANGED if property didn\'t change', () => {
+	xit('should not fire Storage.E_CHANGED if property didn\'t change', () => {
 		let storage = new Storage();
 		let spy = jasmine.createSpy('E_CHANGED  handler');
 

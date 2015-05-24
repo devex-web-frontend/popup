@@ -14,10 +14,6 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "system.js": "~0.16.11",
-    "es6-module-loader": "~0.16.6"
-  },
   "dependencies": {
     "emitter": "~1.5.2"
   }

@@ -1,9 +1,10 @@
-import view from '../src/PopupView';
-import tst from '../globs/tst';
+import view from '../src/Popup/PopupView';
+import  Popup from '../src/Popup/Popup';
+
+let popup = new Popup();
+
 
 view.say();
 console.log('loaded!!!');
-
-window.hmmmm = tst;
-
+console.log(popup.getModelState());
 window.VV = view;
