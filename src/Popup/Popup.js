@@ -1,5 +1,6 @@
 import Storage from '../Storage/Storage';
 import interact from 'interact';
+import OrderManager from '../OrderManager/OrderManager';
 
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
@@ -8,6 +9,9 @@ const DEFAULT_POPUP_STATE = {
 	posY: 0,
 	dragStep: 5
 };
+
+
+let orderManager = new OrderManager();
 
 class Popup extends Storage {
 	constructor(initialState) {
@@ -19,15 +23,27 @@ class Popup extends Storage {
 	}
 
 	show() {
+		this.set('orderPosition', orderManager.push(this));
+
 		this.set({
 			isVisible: true
 		});
 	}
 
 	hide() {
+		orderManager.remove(this);
+
 		this.set({
 			isVisible: false
 		});
+	}
+
+	toFront() {
+		orderManager.toFront(this);
+	}
+
+	toBack() {
+		orderManager.toBack(this);
 	}
 
 	move(dx, dy) {

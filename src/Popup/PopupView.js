@@ -11,6 +11,8 @@ const A_POPUP = 'data-popup';
 const A_POPUP_DRAG_TRIGGER = `${A_POPUP}-drag-trigger`;
 const A_POPUP_CLOSE = `${A_POPUP}-close`;
 
+const Z_INDEX_OFFSET = 30;
+
 const DRAGGABLE_OPTIONS = {
 		enabled: false,
 		restrict: {
@@ -78,6 +80,10 @@ class PopupView {
 	_initUIListeners() {
 		let {popup} = this.elements;
 
+		popup.addEventListener('mousedown', () => {
+			this._model.toFront();
+		});
+
 		popup.addEventListener('click', (e) => {
 			//TODO: Use get ascendant from DXJS lib
 			if (e.target.hasAttribute(A_POPUP_CLOSE)) {
@@ -118,6 +124,12 @@ class PopupView {
 
 		this._model.on(`${Popup.E_CHANGED}:isDraggable`, (isDraggable) => {
 			return (isDraggable) ? this._enableDragging() : this._disableDragging();
+		});
+
+		this._model.on(`${Popup.E_CHANGED}:orderPosition`, (position) => {
+			let {popup} = this.elements;
+
+			popup.style.zIndex = Z_INDEX_OFFSET + position;
 		});
 	}
 }

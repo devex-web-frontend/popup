@@ -24,11 +24,16 @@
 			height: 100%;
 		}
 
+		.popup {
+			position: absolute;
+		}
+
 		.popup--window {
 			border: 2px solid #000;
 			position: absolute;
 			top: 0;
 			left: 0;
+			background: #fff;
 		}
 
 		.popup--header {
@@ -37,6 +42,10 @@
 
 		.popup-message .popup--window {
 			width: 400px;
+		}
+
+		.popup-oneMore .popup--window {
+			width: 300px;
 		}
 
 		.popup-visible {
@@ -79,6 +88,36 @@
 
 		</div>
 	</section>
+	<section class="popup popup-oneMore popup-hidden">
+		<div class="popup--window">
+			<header data-popup-drag-trigger class="popup--header">
+				<h6 class="popup--title">Header</h6>
+				<span data-popup-close class="popup--close">×</span>
+			</header>
+
+
+			<div class="popup--content">
+				<div class="stateMachineMessage">
+					<p class="status">Phone Validated</p>
+
+
+					<p>Here is some text about what's happening in Cosmos.</p>
+					<p>Do you want do do smth?</p>
+				</div>
+
+			</div>
+
+
+			<footer class="popup--footer">
+				<div data-popup-close class="popup--buttons">
+					<button class="button  popup--close" type="button"><span>Ok</span></button>
+				</div>
+
+			</footer>
+
+		</div>
+	</section>
 <button id="showPopup">show popup</button>
+	<button id="showOneMorePopup">show another popup</button>
 </body>
 </html>
