@@ -1,7 +1,7 @@
 import Popup from '../src/Popup/PopupView';
 
 
-let messagePopup = new Popup(document.querySelector('.popup-message'), {isDraggable: true});
+let messagePopup = window.msgPopup = new Popup(document.querySelector('.popup-message'), {isDraggable: true, isVisible: true});
 let showPopupBtn = document.getElementById('showPopup');
 
 showPopupBtn.addEventListener('click', () => {
