@@ -21,7 +21,7 @@ module.exports = function(config) {
       'src/**/!(*.test).js': ['coverage']
     },
 
-    reporters: ['progress', 'coverage'],
+    reporters: ['dots', 'coverage'],
 
     coverageReporter: {
       reporters: [
