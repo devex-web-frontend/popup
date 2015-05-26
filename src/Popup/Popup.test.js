@@ -52,4 +52,16 @@ describe('Popup', () => {
 			expect(popup._state.posY).toBe(110);
 		});
 	});
+
+	describe('#hideAll', () => {
+		it('should hide all popups', () => {
+			let firstPopup = new Popup({isVisible: true});
+			let secondPopup = new Popup({isVisible: true});
+
+			Popup.hideAll();
+
+			expect(firstPopup._state.isVisible).toBe(false);
+			expect(secondPopup._state.isVisible).toBe(false);
+		});
+	});
 });

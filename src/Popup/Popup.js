@@ -12,6 +12,7 @@ const DEFAULT_POPUP_STATE = {
 
 
 let orderManager = new OrderManager();
+let popupList = [];
 
 class Popup extends Storage {
 	constructor(initialState) {
@@ -19,7 +20,14 @@ class Popup extends Storage {
 
 		super();
 
+		popupList.push(this);
 		this.set(state);
+	}
+
+	static hideAll() {
+		popupList.forEach((popup) => {
+			popup.hide();
+		});
 	}
 
 	show() {
