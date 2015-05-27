@@ -1,10 +1,11 @@
-import Storage from '../Storage/Storage';
 import interact from 'interact';
+import Storage from '../Storage/Storage';
 import OrderManager from '../OrderManager/OrderManager';
 
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
 	isDraggable: false,
+	isModal: false,
 	posX: 0,
 	posY: 0,
 	dragStep: 5
@@ -13,6 +14,7 @@ const DEFAULT_POPUP_STATE = {
 
 let orderManager = new OrderManager();
 let popupList = [];
+let isZIndexManagementEnabled = true;
 
 class Popup extends Storage {
 	constructor(initialState) {
@@ -30,8 +32,18 @@ class Popup extends Storage {
 		});
 	}
 
+	static disableZIndexManagement() {
+		isZIndexManagementEnabled = false;
+	}
+
+	static enableZIndexManagement() {
+		isZIndexManagementEnabled = true;
+	}
+
 	show() {
-		this.set('orderPosition', orderManager.push(this));
+		if (isZIndexManagementEnabled) {
+			this.set('orderPosition', orderManager.push(this));
+		}
 
 		this.set({
 			isVisible: true
@@ -39,7 +51,9 @@ class Popup extends Storage {
 	}
 
 	hide() {
-		orderManager.remove(this);
+		if (isZIndexManagementEnabled) {
+			orderManager.remove(this);
+		}
 
 		this.set({
 			isVisible: false
@@ -47,11 +61,15 @@ class Popup extends Storage {
 	}
 
 	toFront() {
-		orderManager.toFront(this);
+		if (isZIndexManagementEnabled) {
+			orderManager.toFront(this);
+		}
 	}
 
 	toBack() {
-		orderManager.toBack(this);
+		if (isZIndexManagementEnabled) {
+			orderManager.toBack(this);
+		}
 	}
 
 	move(dx, dy) {
@@ -64,4 +82,4 @@ class Popup extends Storage {
 	}
 }
 
-export default Popup;
+export default window.Popup = Popup;

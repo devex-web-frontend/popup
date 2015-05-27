@@ -259,4 +259,4 @@ class PopupView {
 	}
 }
 
-export default PopupView;
+export default window.PopupView = PopupView;

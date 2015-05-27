@@ -1,6 +1,5 @@
 import Popup from '../src/Popup/PopupView';
 
-
 let messagePopup = new Popup(document.querySelector('.popup-message'), {isDraggable: true});
 let anotherPopup = new Popup(document.querySelector('.popup-oneMore'), {isDraggable: true});
 
