@@ -4,7 +4,7 @@ import OrderManager from '../OrderManager/OrderManager';
 
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
-	isDraggable: false,
+	isDraggable: true,
 	isModal: false,
 	posX: 0,
 	posY: 0,

@@ -5,8 +5,15 @@ const CN_POPUP = 'popup';
 const CN_POPUP_VISIBLE = `${CN_POPUP}-visible`;
 const CN_POPUP_HIDDEN = `${CN_POPUP}-hidden`;
 const CN_POPUP_MODAL = `${CN_POPUP}-modal`;
+const CN_POPUP_WINDOW = `${CN_POPUP}--window`;
+const CN_POPUP_TITLE = `${CN_POPUP}--title`;
+const CN_POPUP_CONTENT = `${CN_POPUP}--content`;
+const CN_POPUP_BUTTONS = `${CN_POPUP}--buttons`;
 
-const S_POPUP_WINDOW = `.${CN_POPUP}--window`;
+const CN_BUTTON = 'button';
+
+
+const S_POPUP_WINDOW = `.${CN_POPUP_WINDOW}`;
 
 const A_POPUP = 'data-popup';
 const A_POPUP_DRAG_TRIGGER = `${A_POPUP}-drag-trigger`;
@@ -15,7 +22,6 @@ const A_POPUP_CLOSE = `${A_POPUP}-close`;
 const Z_INDEX_OFFSET = 30;
 
 const DRAGGABLE_OPTIONS = {
-		enabled: false,
 		restrict: {
 			restriction: document.body,
 			elementRect: {
@@ -71,18 +77,71 @@ function getPopupElements(popupElement) {
 	};
 }
 
+function createPopupElements(config) {
+	let popup = document.createElement('section');
+
+	popup.innerHTML = `
+		<div class="${CN_POPUP_WINDOW}">
+			<header ${A_POPUP_DRAG_TRIGGER} class="popup--header">
+				<h6 class="${CN_POPUP_TITLE}">${config.title}</h6>
+				<span ${A_POPUP_CLOSE} class="popup--close">×</span>
+			</header>
+			<div class="${CN_POPUP_CONTENT}">
+			</div>
+			<footer class="popup--footer">
+				<div class="${CN_POPUP_BUTTONS}">
+
+				</div>
+			</footer>
+		</div>`;
+
+	let popupContent = popup.querySelector(`.${CN_POPUP_CONTENT}`);
+
+	popupContent.innerHTML = config.content;
+
+	if (config.buttons) {
+		let popupButtons = popup.querySelector(`.${CN_POPUP_BUTTONS}`);
+
+		config.buttons.map(createBtnFromConfig)
+			.forEach(btn => popupButtons.appendChild(btn));
+	}
+	document.body.appendChild(popup);
+	return getPopupElements(popup);
+}
+
+function createBtnFromConfig(cfg) {
+	let btn = document.createElement('button');
+	btn.classList.add(CN_BUTTON);
+
+	btn.innerHTML = `<span>${cfg.text}</span>`;
+
+	cfg.modifiers
+		.map(modifier => `${CN_BUTTON}-${modifier}`)
+		.forEach(modifier => btn.classList.add(modifier));
+
+	if (cfg.isCloser) {
+		btn.setAttribute(A_POPUP_CLOSE, true);
+	}
+
+	return btn;
+}
+
 class PopupView {
-	constructor(...args) {
-		let elements = (args[0] instanceof HTMLElement) ? getPopupElements(args[0]) : () => {};
+
+	/**
+	 * @param {Object} [options]
+	 * @param {HTMLElement} [element]
+	 */
+	constructor(element, options) {
+
+		this.elements = (element instanceof HTMLElement) ? getPopupElements(element) : createPopupElements(element);
 
 		this._model = new Popup();
-		this.elements = elements;
+		this._initModelListeners();
+		this._model.set(options);
 
 		this._initDraggables();
-		this._initModelListeners(args[0]);
 		this._initUIListeners();
-
-		this._model.set(args[1]);
 	}
 
 
@@ -180,7 +239,9 @@ class PopupView {
 
 	_initDraggables() {
 		let elements = this.elements;
-		let draggableOptions = Object.assign({}, DRAGGABLE_OPTIONS, {origin: elements.popup});
+		let draggableOptions = Object.assign({
+			enabled: this._model.get('isDraggable')
+		}, DRAGGABLE_OPTIONS, {origin: elements.popup});
 
 		this._draggables = elements.dragTriggers.map((trigger) => {
 			let draggable = new Draggable(trigger, draggableOptions);

@@ -1,7 +1,7 @@
 import Popup from '../src/Popup/PopupView';
 
-let messagePopup = new Popup(document.querySelector('.popup-message'), {isDraggable: true});
-let anotherPopup = new Popup(document.querySelector('.popup-oneMore'), {isDraggable: true});
+let messagePopup = new Popup(document.querySelector('.popup-message'));
+let anotherPopup = new Popup(document.querySelector('.popup-oneMore'));
 
 let rectangle = document.getElementById('rectangle');
 
@@ -21,6 +21,24 @@ document.body.addEventListener('click', function(e) {
 			break;
 		case 'showModalPopup':
 			messagePopup.showModal();
+			break;
+		case 'createPopupFromCfg':
+			let popup = window.cfgPopup =  new Popup({
+				title: 'Test title from cfg',
+				content: '<a href="http://google.com">google.com</a>',
+				buttons: [
+					{
+						text: 'cancel',
+						modifiers: ['secondary'],
+						isCloser: true
+					},
+					{
+						text: 'ok',
+						modifiers: ['primary']
+					}
+				]
+			});
+			popup.show();
 			break;
 	}
 });
