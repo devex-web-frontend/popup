@@ -4,6 +4,7 @@ import Draggable from '../Draggable/Draggable';
 const CN_POPUP = 'popup';
 const CN_POPUP_VISIBLE = `${CN_POPUP}-visible`;
 const CN_POPUP_HIDDEN = `${CN_POPUP}-hidden`;
+const CN_POPUP_MODAL = `${CN_POPUP}-modal`;
 
 const S_POPUP_WINDOW = `.${CN_POPUP}--window`;
 
@@ -126,6 +127,15 @@ class PopupView {
 		this.show(x, y);
 	}
 
+	showModal() {
+		let {window} = this.elements;
+
+		window.style.top = '';
+		window.style.left = '';
+
+		this._setModalState();
+		this.showCentered();
+	}
 
 	/**
 	 * Computes and return popup window sizes
@@ -142,7 +152,30 @@ class PopupView {
 	 * hides popup
 	 */
 	hide() {
+		this._resetModalState();
 		this._model.hide();
+	}
+
+	disableDragging() {
+		this._model.set({
+			isDraggable: false
+		});
+	}
+
+	enableDragging() {
+		this._model.set({
+			isDraggable: true
+		});
+	}
+
+	_setModalState() {
+		this._model.set('isModal', true);
+		this._disableDragging();
+	}
+
+	_resetModalState() {
+		this._model.set('isModal', false);
+		this._enableDragging();
 	}
 
 	_initDraggables() {
@@ -175,9 +208,13 @@ class PopupView {
 	}
 
 	_enableDragging() {
-		this._draggables.forEach((draggable) => {
-			draggable.enable();
-		});
+		let isDraggable = this._model.get('isDraggable');
+
+		if (isDraggable) {
+			this._draggables.forEach((draggable) => {
+				draggable.enable();
+			});
+		}
 	}
 
 	_disableDragging() {
@@ -212,6 +249,12 @@ class PopupView {
 			let {popup} = this.elements;
 
 			popup.style.zIndex = Z_INDEX_OFFSET + position;
+		});
+
+		this._model.on(`${Popup.E_CHANGED}:isModal`, (isModal) => {
+			let {popup} = this.elements;
+
+			return isModal ? popup.classList.add(CN_POPUP_MODAL) : popup.classList.remove(CN_POPUP_MODAL);
 		});
 	}
 }

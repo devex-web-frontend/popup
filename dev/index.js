@@ -20,6 +20,9 @@ document.body.addEventListener('click', function(e) {
 		case 'showCenteredPopupByElement':
 			messagePopup.showCentered(rectangle);
 			break;
+		case 'showModalPopup':
+			messagePopup.showModal();
+			break;
 	}
 });
 
