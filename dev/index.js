@@ -1,17 +1,26 @@
 import Popup from '../src/Popup/PopupView';
 
 
-let messagePopup = window.msgPopup = new Popup(document.querySelector('.popup-message'), {isDraggable: true});
-let showPopupBtn = document.getElementById('showPopup');
+let messagePopup = new Popup(document.querySelector('.popup-message'), {isDraggable: true});
+let anotherPopup = new Popup(document.querySelector('.popup-oneMore'), {isDraggable: true});
 
-let anotherPopup = window.msgPopup = new Popup(document.querySelector('.popup-oneMore'), {isDraggable: true});
-let showOneMorePopupBtn = document.getElementById('showOneMorePopup');
+let rectangle = document.getElementById('rectangle');
 
-showPopupBtn.addEventListener('click', () => {
-	messagePopup.show();
+document.body.addEventListener('click', function(e) {
+	switch (e.target.getAttribute('id')) {
+		case 'showPopup':
+			messagePopup.show();
+			break;
+		case 'showOneMorePopup':
+			anotherPopup.show(50, 50);
+			break;
+		case 'showCenteredPopup':
+			messagePopup.showCentered();
+			break;
+		case 'showCenteredPopupByElement':
+			messagePopup.showCentered(rectangle);
+			break;
+	}
 });
 
-showOneMorePopupBtn.addEventListener('click', () => {
-	anotherPopup.show();
-});
 window.messagePopup = messagePopup;

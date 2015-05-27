@@ -27,6 +27,35 @@ const DRAGGABLE_OPTIONS = {
 		maxPerElement: Infinity
 };
 
+/**
+ * Compute element sizes if it is hidden
+ * @param {HTMLElement} element
+ * @param {HTMLElement} [hiddenParent]
+ */
+function getSizesOfHiddenElement(element, hiddenParent) {
+	let hiddenElement = hiddenParent || element;
+	let width;
+	let height;
+
+	hiddenElement.style.visibility = 'hidden';
+	hiddenElement.style.display = 'block';
+	hiddenElement.style.position = 'absolute';
+
+	[width, height] = getElementSizes(element);
+
+	hiddenElement.style.visibility = '';
+	hiddenElement.style.display = '';
+	hiddenElement.style.position = '';
+
+	return [width, height];
+}
+
+function getElementSizes(element) {
+	let {width, height} = element.getBoundingClientRect();
+
+	return [width, height];
+}
+
 
 function getPopupElements(popupElement) {
 	let window = popupElement.querySelector(S_POPUP_WINDOW);
@@ -55,10 +84,63 @@ class PopupView {
 		this._model.set(args[1]);
 	}
 
-	show() {
+
+	/**
+	 * Shows popup
+	 * @param {Number} [x]
+	 * @param {Number} [y]
+	 */
+	show(x, y) {
+		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+			this._model.set({
+				posX: x,
+				posY: y
+			});
+		}
+
 		this._model.show();
 	}
 
+	/**
+	 * Shows popup at center of window or element if it provided
+	 * @param {HTMLElement} [origin]
+	 */
+	showCentered(origin) {
+		let parentOffsetX = 0;
+		let parentOffsetY = 0;
+		let parentWidth = window.innerWidth;
+		let parentHeight = window.innerHeight;
+		let [popupWindowWidth, popupWindowHeight] = this.getWindowSizes();
+
+		if (origin) {
+			let bounds = origin.getBoundingClientRect();
+			parentWidth = bounds.width;
+			parentHeight = bounds.height;
+			parentOffsetX = bounds.left;
+			parentOffsetY = bounds.top;
+		}
+
+		let x = (parentWidth / 2) - (popupWindowWidth / 2) + parentOffsetX;
+		let y = (parentHeight / 2) - (popupWindowHeight / 2) + parentOffsetY;
+
+		this.show(x, y);
+	}
+
+
+	/**
+	 * Computes and return popup window sizes
+	 * @returns [width:number, height:number]
+	 */
+	getWindowSizes() {
+		let {popup, window} = this.elements;
+		let isVisible = this._model.get('isVisible');
+
+		return isVisible ? getElementSizes(window) : getSizesOfHiddenElement(window, popup);
+	}
+
+	/**
+	 * hides popup
+	 */
 	hide() {
 		this._model.hide();
 	}
