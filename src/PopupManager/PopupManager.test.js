@@ -1,14 +1,16 @@
-import OrderManager from './OrderManager';
+'use strict';
+
+import PopupManager from './PopupManager';
 
 
 function createItem(name) {
 	return jasmine.createSpyObj(name, ['set']);
 }
 
-describe('OrderManager', () => {
+describe('PopupManager', () => {
 	describe('#push', () => {
 		it('should push item to order stack and return id', () => {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -22,7 +24,7 @@ describe('OrderManager', () => {
 
 	describe('#remove', () => {
 		it('should remove item from stack', () => {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -34,7 +36,7 @@ describe('OrderManager', () => {
 		});
 
 		it('should set new orderPosition to each item', function() {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -49,7 +51,7 @@ describe('OrderManager', () => {
 
 	describe('#toFront', () => {
 		it('should move item to front of the stack', () => {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -64,7 +66,7 @@ describe('OrderManager', () => {
 		});
 
 		it('should set new orderPosition to each item', function() {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -83,7 +85,7 @@ describe('OrderManager', () => {
 
 	describe('#toBack', () => {
 		it('should move item to front of the stack', () => {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -99,7 +101,7 @@ describe('OrderManager', () => {
 		});
 
 		it('should set new orderPosition to each item', function() {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');
@@ -118,7 +120,7 @@ describe('OrderManager', () => {
 
 	describe('#getPosition()', () => {
 		it('should return orderPosition', () => {
-			let manager = new OrderManager();
+			let manager = new PopupManager();
 
 			let one = createItem('one');
 			let two = createItem('two');

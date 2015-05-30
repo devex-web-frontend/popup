@@ -1,6 +1,8 @@
-const ORDER_POSITION_PROP = 'orderPosition';
+'use strict';
 
-class OrderManager {
+const PROP_ORDER_POSITION = 'orderPosition';
+
+class PopupManager {
 
 	constructor() {
 		this._stack = [];
@@ -40,9 +42,11 @@ class OrderManager {
 
 	_notifyAll() {
 		this._stack.forEach((item) => {
-			item.set(ORDER_POSITION_PROP, this.getPosition(item));
+			item.set(PROP_ORDER_POSITION, this.getPosition(item));
 		});
 	}
 }
 
-export default OrderManager;
+PopupManager.PROP_ORDER_POSITION = 'orderPosition';
+
+export default PopupManager;

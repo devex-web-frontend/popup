@@ -1,3 +1,5 @@
+'use strict';
+
 import Emitter from 'emitter';
 
 function isObject(obj) {

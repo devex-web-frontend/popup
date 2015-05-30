@@ -1,6 +1,6 @@
-import interact from 'interact';
+'use strict';
 
-const DRAG_MOVE = 'dragmove';
+import interact from 'interact';
 
 class Draggable {
 
@@ -8,7 +8,7 @@ class Draggable {
 	 * @param {HTMLElement} element
 	 * @param {Object} options
 	 */
-	constructor(element, options) {
+	constructor(element, options = {}) {
 		let {origin} = options;
 
 		origin = origin || 'self';
@@ -19,7 +19,7 @@ class Draggable {
 	}
 
 	onMove(handler) {
-		this._interactable.on(DRAG_MOVE, handler);
+		this._interactable.on(Draggable.E_DRAG_MOVE, handler);
 	}
 
 	disable() {
@@ -30,5 +30,7 @@ class Draggable {
 		this._interactable.draggable(true);
 	}
 }
+
+Draggable.E_DRAG_MOVE = 'dragmove';
 
 export default Draggable;

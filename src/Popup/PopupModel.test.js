@@ -1,7 +1,9 @@
-import Popup from './Popup';
+'use strict';
+
+import Popup from './PopupModel';
 
 
-describe('Popup', () => {
+describe('PopupModel', () => {
 
 	afterEach(() => {
 		Popup.hideAll();
