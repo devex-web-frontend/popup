@@ -19,7 +19,7 @@ function normalizeArgs(...args) {
 	return result;
 }
 
-class Storage extends Emitter {
+class State extends Emitter {
 	constructor() {
 		super();
 		this._state = {};
@@ -33,12 +33,12 @@ class Storage extends Emitter {
 			let oldValue = oldState[key];
 
 			if (newValue !== oldValue) {
-				this.emitSync(`${Storage.E_CHANGED}:${key}`, newValue, oldValue, newState);
+				this.emitSync(`${State.E_CHANGED}:${key}`, newValue, oldValue, newState);
 			}
 		});
 
 		//TODO: don't fire this event if state hasn't changed (should be implemented after object-array-utils moved to es6)
-		this.emitSync(Storage.E_CHANGED, newState);
+		this.emitSync(State.E_CHANGED, newState);
 	}
 
 	set(...args) {
@@ -80,6 +80,6 @@ class Storage extends Emitter {
 	}
 }
 
-Storage.E_CHANGED = 'Storage:changed';
+State.E_CHANGED = 'State:changed';
 
-export default Storage;
+export default State;

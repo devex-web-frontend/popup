@@ -2,7 +2,7 @@
 
 import State from './State';
 
-describe('Storage', () => {
+describe('State', () => {
 	describe('#set', () => {
 		it('should set property provided as key value pair', () => {
 			let storage = new State();

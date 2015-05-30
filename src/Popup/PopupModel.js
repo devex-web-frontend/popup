@@ -2,7 +2,7 @@
 
 import interact from 'interact';
 import State from '../State/State';
-import OrderManager from '../PopupManager/PopupManager';
+import PopupManager from '../PopupManager/PopupManager';
 
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
@@ -14,11 +14,11 @@ const DEFAULT_POPUP_STATE = {
 };
 
 
-let orderManager = new OrderManager();
+let popupManager = new PopupManager();
 let popupList = [];
 let isZIndexManagementEnabled = true;
 
-class Popup extends State {
+class PopupModel extends State {
 	constructor(initialState) {
 		let state = Object.assign({}, DEFAULT_POPUP_STATE, initialState);
 
@@ -44,7 +44,7 @@ class Popup extends State {
 
 	show() {
 		if (isZIndexManagementEnabled) {
-			this.set('orderPosition', orderManager.push(this));
+			this.set('orderPosition', popupManager.push(this));
 		}
 
 		this.set({
@@ -54,7 +54,7 @@ class Popup extends State {
 
 	hide() {
 		if (isZIndexManagementEnabled) {
-			orderManager.remove(this);
+			popupManager.remove(this);
 		}
 
 		this.set({
@@ -64,13 +64,13 @@ class Popup extends State {
 
 	toFront() {
 		if (isZIndexManagementEnabled) {
-			orderManager.toFront(this);
+			popupManager.toFront(this);
 		}
 	}
 
 	toBack() {
 		if (isZIndexManagementEnabled) {
-			orderManager.toBack(this);
+			popupManager.toBack(this);
 		}
 	}
 
@@ -84,4 +84,4 @@ class Popup extends State {
 	}
 }
 
-export default window.Popup = Popup;
+export default window.PopupModel = PopupModel;
