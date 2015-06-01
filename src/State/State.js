@@ -2,23 +2,6 @@
 
 import Emitter from 'emitter';
 
-function isObject(obj) {
-	return obj === Object(obj);
-}
-function normalizeArgs(...args) {
-	let result = {};
-
-	if (args.length === 2) {
-		result[args[0]] = args[1];
-	}
-
-	if (args.length === 1 && isObject(args[0])) {
-		result = args[0];
-	}
-
-	return result;
-}
-
 class State extends Emitter {
 	constructor() {
 		super();
@@ -26,23 +9,26 @@ class State extends Emitter {
 	}
 
 	_notify(newProps, oldState) {
-		let newState = this.getState();
+		let changedPropsBefore = {};
+		let changedPropsAfter = {};
 
 		Object.keys(newProps).forEach(key => {
 			let newValue = newProps[key];
 			let oldValue = oldState[key];
 
 			if (newValue !== oldValue) {
-				this.emitSync(`${State.E_CHANGED}:${key}`, newValue, oldValue, newState);
+				changedPropsBefore[key] = oldValue;
+				changedPropsAfter[key] = newValue;
+
+				this.emitSync(`${State.E_CHANGED}:${key}`, newValue, oldValue);
 			}
 		});
 
-		//TODO: don't fire this event if state hasn't changed (should be implemented after object-array-utils moved to es6)
-		this.emitSync(State.E_CHANGED, newState);
+		this.emitSync(State.E_CHANGED, changedPropsAfter, changedPropsBefore);
 	}
 
-	set(...args) {
-		let props = normalizeArgs(...args);
+	set(key, value) {
+		let props = (typeof key === 'object') ? key : {[key]: value};
 		let oldState = this.getState();
 
 		Object.keys(props).forEach(key => {
@@ -53,13 +39,18 @@ class State extends Emitter {
 	}
 
 	get(...keys) {
-		return (keys.length === 1) ?
-			this._state[keys[0]]
-			:
-			keys.reduce((acc, key) => {
+		let result;
+
+		if (keys.length === 1) {
+			result = this._state[keys[0]];
+		} else {
+			result = keys.reduce((acc, key) => {
 				acc[key] = this._state[key];
 				return acc;
 			}, {});
+		}
+
+		return result;
 	}
 
 	remove(...keys) {

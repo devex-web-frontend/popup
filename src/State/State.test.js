@@ -46,7 +46,7 @@ describe('State', () => {
 			expect(spy.calls.count()).toBe(1);
 		});
 
-		it('should fire State.E_CHANGED and pass storage state as argument', () => {
+		it('should fire State.E_CHANGED and pass changed parameters as 2 arguments after set and before set', () => {
 			let storage = new State();
 			let spy = jasmine.createSpy('E_CHANGED  handler');
 
@@ -56,9 +56,9 @@ describe('State', () => {
 			storage.set('test', 'two');
 			storage.set('oneMoreTest', 'test');
 
-			expect(spy.calls.argsFor(0)).toEqual([{test: 'one'}]);
-			expect(spy.calls.argsFor(1)).toEqual([{test: 'two'}]);
-			expect(spy.calls.argsFor(2)).toEqual([{test: 'two', oneMoreTest: 'test'}]);
+			expect(spy.calls.argsFor(0)).toEqual([{test: 'one'}, {test: undefined}]);
+			expect(spy.calls.argsFor(1)).toEqual([{test: 'two'}, {test: 'one'}]);
+			expect(spy.calls.argsFor(2)).toEqual([{oneMoreTest: 'test'}, {oneMoreTest: undefined}]);
 		});
 
 		it('should fire State.E_CHANGED:{key} for each updated property', () => {
