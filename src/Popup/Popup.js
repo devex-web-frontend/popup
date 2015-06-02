@@ -198,32 +198,32 @@ class Popup {
 	_initModelListeners() {
 		let {window} = this.elements;
 
-		this._model.on(`${PopupModel.E_CHANGED}:posX`, (x) => {
+		this._model.on(`${PopupModel.E_CHANGE}:posX`, (x) => {
 			window.style.left = x + 'px';
 		});
 
-		this._model.on(`${PopupModel.E_CHANGED}:posY`, (y) => {
+		this._model.on(`${PopupModel.E_CHANGE}:posY`, (y) => {
 			window.style.top = y + 'px';
 		});
 
-		this._model.on(`${PopupModel.E_CHANGED}:isVisible`, (isVisible) => {
+		this._model.on(`${PopupModel.E_CHANGE}:isVisible`, (isVisible) => {
 			let {popup} = this.elements;
 
 			popup.classList.add(isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
 			popup.classList.remove(!isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
 		});
 
-		this._model.on(`${PopupModel.E_CHANGED}:isDraggable`, (isDraggable) => {
+		this._model.on(`${PopupModel.E_CHANGE}:isDraggable`, (isDraggable) => {
 			return (isDraggable) ? this._enableDragging() : this._disableDragging();
 		});
 
-		this._model.on(`${PopupModel.E_CHANGED}:orderPosition`, (position) => {
+		this._model.on(`${PopupModel.E_CHANGE}:orderPosition`, (position) => {
 			let {popup} = this.elements;
 
 			popup.style.zIndex = Z_INDEX_OFFSET + position;
 		});
 
-		this._model.on(`${PopupModel.E_CHANGED}:isModal`, (isModal) => {
+		this._model.on(`${PopupModel.E_CHANGE}:isModal`, (isModal) => {
 			let {popup} = this.elements;
 
 			return isModal ? popup.classList.add(CN_POPUP_MODAL) : popup.classList.remove(CN_POPUP_MODAL);

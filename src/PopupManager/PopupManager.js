@@ -1,11 +1,31 @@
 'use strict';
-
-const PROP_ORDER_POSITION = 'orderPosition';
+import PopupModel from '../Popup/PopupModel';
 
 class PopupManager {
 
 	constructor() {
 		this._stack = [];
+		this._list = [];
+		this.isZIndexManagementEnabled = true;
+	}
+
+	register(item) {
+		this._list.push(item);
+
+		item.on(`${PopupModel.E_CHANGE}:isVisible`, (isVisible) => {
+			if (this.isZIndexManagementEnabled) {
+				if (isVisible) {
+					this._pushToStack(item);
+				} else {
+					this._removeFromStack(item);
+				}
+				this._notifyAll();
+			}
+		});
+	}
+
+	deregister(item) {
+		removeItemFromArray(item, this._list);
 	}
 
 	getPosition(item) {
@@ -13,38 +33,41 @@ class PopupManager {
 	}
 
 	toFront(item) {
-		this._remove(item);
-		this.push(item);
+		this._removeFromStack(item);
+		this._pushToStack(item);
 		this._notifyAll();
 	}
 
 	toBack(item) {
-		this._remove(item);
+		this._removeFromStack(item);
 		this._stack.unshift(item);
 		this._notifyAll();
 	}
 
-	push(item) {
+	hideAll() {
+
+	}
+
+	_pushToStack(item) {
 		this._stack.push(item);
 		return this.getPosition(item);
 	}
 
-	remove(item) {
-		this._remove(item);
-		this._notifyAll();
-	}
-
-	_remove(item) {
-		let index = this.getPosition(item);
-
-		this._stack.splice(index, 1);
+	_removeFromStack(item) {
+		removeItemFromArray(item, this._stack);
 	}
 
 	_notifyAll() {
 		this._stack.forEach((item) => {
-			item.set(PROP_ORDER_POSITION, this.getPosition(item));
+			item.set(PopupManager.PROP_ORDER_POSITION, this.getPosition(item));
 		});
 	}
+}
+
+function removeItemFromArray(item, array) {
+	let index = array.indexOf(item);
+
+	array.splice(index, 1);
 }
 
 PopupManager.PROP_ORDER_POSITION = 'orderPosition';

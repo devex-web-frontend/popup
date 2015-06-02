@@ -43,9 +43,9 @@ class PopupModel extends State {
 	}
 
 	show() {
-		if (isZIndexManagementEnabled) {
-			this.set('orderPosition', popupManager.push(this));
-		}
+		//if (isZIndexManagementEnabled) {
+		//	this.set('orderPosition', popupManager.push(this));
+		//}
 
 		this.set({
 			isVisible: true
@@ -53,9 +53,9 @@ class PopupModel extends State {
 	}
 
 	hide() {
-		if (isZIndexManagementEnabled) {
-			popupManager.remove(this);
-		}
+		//if (isZIndexManagementEnabled) {
+		//	popupManager.remove(this);
+		//}
 
 		this.set({
 			isVisible: false
@@ -85,3 +85,4 @@ class PopupModel extends State {
 }
 
 export default window.PopupModel = PopupModel;
+export {popupManager as popupManager};

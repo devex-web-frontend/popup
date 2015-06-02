@@ -24,33 +24,21 @@ describe('State', () => {
 			expect(storage._state.one).toBe('test');
 		});
 
-		it('should fire State.E_CHANGED', () => {
+		it('should fire State.E_CHANGE', () => {
 			let storage = new State();
-			let spy = jasmine.createSpy('E_CHANGED  handler');
+			let spy = jasmine.createSpy('E_CHANGE  handler');
 
-			storage.on(State.E_CHANGED, spy);
+			storage.on(State.E_CHANGE, spy);
 			storage.set('test', 'one');
 
 			expect(spy).toHaveBeenCalled();
 		});
 
-		//TODO: enable this test when object-array-utils moved to es6
-		xit('should not fire State.E_CHANGED if property didn\'t change', () => {
+		it('should fire State.E_CHANGE and pass changed parameters as 2 arguments after set and before set', () => {
 			let storage = new State();
-			let spy = jasmine.createSpy('E_CHANGED  handler');
+			let spy = jasmine.createSpy('E_CHANGE  handler');
 
-			storage.on(State.E_CHANGED, spy);
-			storage.set('test', 'one');
-			storage.set('test', 'one');
-
-			expect(spy.calls.count()).toBe(1);
-		});
-
-		it('should fire State.E_CHANGED and pass changed parameters as 2 arguments after set and before set', () => {
-			let storage = new State();
-			let spy = jasmine.createSpy('E_CHANGED  handler');
-
-			storage.on(State.E_CHANGED, spy);
+			storage.on(State.E_CHANGE, spy);
 
 			storage.set('test', 'one');
 			storage.set('test', 'two');
@@ -61,12 +49,12 @@ describe('State', () => {
 			expect(spy.calls.argsFor(2)).toEqual([{oneMoreTest: 'test'}, {oneMoreTest: undefined}]);
 		});
 
-		it('should fire State.E_CHANGED:{key} for each updated property', () => {
+		it('should fire State.E_CHANGE:{key} for each updated property', () => {
 			let storage = new State();
 			let spyOnTestChange = jasmine.createSpy('test-change-handler');
 			let spyOnOtherChange = jasmine.createSpy('other-change-handler');
-			let testPropChanged = `${State.E_CHANGED}:test`;
-			let otherPropChanged = `${State.E_CHANGED}:other`;
+			let testPropChanged = `${State.E_CHANGE}:test`;
+			let otherPropChanged = `${State.E_CHANGE}:other`;
 
 			storage.on(testPropChanged, spyOnTestChange);
 			storage.on(otherPropChanged, spyOnOtherChange);
@@ -82,11 +70,11 @@ describe('State', () => {
 			expect(spyOnOtherChange).toHaveBeenCalled();
 		});
 
-		it('should not fire State.E_CHANGED:{key} if property value did not change', () => {
+		it('should not fire State.E_CHANGE:{key} if property value did not change', () => {
 			let storage = new State();
-			let spy = jasmine.createSpy('E_CHANGED:test handler');
+			let spy = jasmine.createSpy('E_CHANGE:test handler');
 
-			storage.on(`${State.E_CHANGED}:test`, spy);
+			storage.on(`${State.E_CHANGE}:test`, spy);
 
 			storage.set('test', 'qwe');
 			storage.set('test', 'qwe');
@@ -155,11 +143,11 @@ describe('State', () => {
 			}));
 		});
 
-		it('should fire State.E_CHANGED event', () => {
+		it('should fire State.E_CHANGE event', () => {
 			let storage = new State();
-			let spy = jasmine.createSpy('E_CHANGED  handler');
+			let spy = jasmine.createSpy('E_CHANGE  handler');
 
-			storage.on(State.E_CHANGED, spy);
+			storage.on(State.E_CHANGE, spy);
 			storage._state = {
 				some: 'test'
 			};
@@ -168,12 +156,12 @@ describe('State', () => {
 			expect(spy).toHaveBeenCalled();
 		});
 
-		it('should fire State.E_CHANGED:{key} for each removed property', () => {
+		it('should fire State.E_CHANGE:{key} for each removed property', () => {
 			let storage = new State();
 			let spyOnTestChange = jasmine.createSpy('test-change-handler');
 			let spyOnOtherChange = jasmine.createSpy('other-change-handler');
-			let testPropChanged = `${State.E_CHANGED}:test`;
-			let otherPropChanged = `${State.E_CHANGED}:other`;
+			let testPropChanged = `${State.E_CHANGE}:test`;
+			let otherPropChanged = `${State.E_CHANGE}:other`;
 
 			storage.on(testPropChanged, spyOnTestChange);
 			storage.on(otherPropChanged, spyOnOtherChange);

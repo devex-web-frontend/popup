@@ -20,11 +20,11 @@ class State extends Emitter {
 				changedPropsBefore[key] = oldValue;
 				changedPropsAfter[key] = newValue;
 
-				this.emitSync(`${State.E_CHANGED}:${key}`, newValue, oldValue);
+				this.emitSync(`${State.E_CHANGE}:${key}`, newValue, oldValue);
 			}
 		});
 
-		this.emitSync(State.E_CHANGED, changedPropsAfter, changedPropsBefore);
+		this.emitSync(State.E_CHANGE, changedPropsAfter, changedPropsBefore);
 	}
 
 	set(key, value) {
@@ -71,6 +71,6 @@ class State extends Emitter {
 	}
 }
 
-State.E_CHANGED = 'State:changed';
+State.E_CHANGE = 'State:change';
 
 export default State;
