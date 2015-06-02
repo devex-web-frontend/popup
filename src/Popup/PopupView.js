@@ -1,6 +1,7 @@
 'use strict';
 
 import PopupModel from './PopupModel';
+import PopupManager from './PopupManager';
 import Draggable from '../Draggable/Draggable';
 import helpers from '../Helpers/Helpers';
 
@@ -51,23 +52,6 @@ class PopupView{
 		this._initModelListeners();
 		this._initDraggables();
 		this._initUIListeners();
-	}
-
-
-	/**
-	 * Shows popup
-	 * @param {Number} [x]
-	 * @param {Number} [y]
-	 */
-	show(x, y) {
-		if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-			this._model.set({
-				posX: x,
-				posY: y
-			});
-		}
-
-		this._model.show();
 	}
 
 	/**
@@ -196,32 +180,32 @@ class PopupView{
 	_initModelListeners() {
 		let {window} = this.elements;
 
-		this._model.on(`${PopupModel.E_CHANGE}:posX`, (x) => {
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_POS_X}`, (x) => {
 			window.style.left = x + 'px';
 		});
 
-		this._model.on(`${PopupModel.E_CHANGE}:posY`, (y) => {
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_POS_Y}`, (y) => {
 			window.style.top = y + 'px';
 		});
 
-		this._model.on(`${PopupModel.E_CHANGE}:isVisible`, (isVisible) => {
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_VISIBLE}`, (isVisible) => {
 			let {popup} = this.elements;
 
 			popup.classList.add(isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
 			popup.classList.remove(!isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
 		});
 
-		this._model.on(`${PopupModel.E_CHANGE}:isDraggable`, (isDraggable) => {
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_DRAGGABLE}`, (isDraggable) => {
 			return (isDraggable) ? this._enableDragging() : this._disableDragging();
 		});
 
-		this._model.on(`${PopupModel.E_CHANGE}:orderPosition`, (position) => {
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupManager.PROP_ORDER_POSITION}`, (position) => {
 			let {popup} = this.elements;
 
 			popup.style.zIndex = Z_INDEX_OFFSET + position;
 		});
 
-		this._model.on(`${PopupModel.E_CHANGE}:isModal`, (isModal) => {
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_MODAL}`, (isModal) => {
 			let {popup} = this.elements;
 
 			return isModal ? popup.classList.add(CN_POPUP_MODAL) : popup.classList.remove(CN_POPUP_MODAL);

@@ -27,6 +27,31 @@ describe('PopupModel', () => {
 		});
 	});
 
+	describe('#showAt', () => {
+		it('should set popup to provided position and show', () => {
+			let popup = new PopupModel({}, popupManager);
+
+			popup.showAt(777, 432);
+
+			expect(popup._state.isVisible).toBe(true);
+			expect(popup._state.posX).toBe(777);
+			expect(popup._state.posY).toBe(432);
+		});
+	});
+
+	describe('#showModal', () => {
+		it('should show modal popup', () => {
+			let popup = new PopupModel({}, popupManager);
+
+			popup.showModal();
+
+			expect(popup._state.isVisible).toBe(true);
+			expect(popup._state.isModal).toBe(true);
+			expect(popup._state.posX).toBe('');
+			expect(popup._state.posY).toBe('');
+		});
+	});
+
 	describe('#hide', () => {
 		it('should hide popup', () => {
 			let popup = new PopupModel({}, popupManager);
@@ -48,6 +73,17 @@ describe('PopupModel', () => {
 
 			expect(popup._state.posX).toBe(115);
 			expect(popup._state.posY).toBe(110);
+		});
+	});
+
+	describe('#moveTo', () => {
+		it('should set popup position according provided arguments', () => {
+			let popup = new PopupModel({}, popupManager);
+
+			popup.moveTo(50, 60);
+
+			expect(popup._state.posX).toBe(50);
+			expect(popup._state.posY).toBe(60);
 		});
 	});
 

@@ -25,13 +25,27 @@ class PopupModel extends State {
 
 	show() {
 		this.set({
-			isVisible: true
+			[PopupModel.PROP_IS_VISIBLE]: true
 		});
+	}
+
+	showAt(x, y) {
+		this.moveTo(x, y);
+		this.show();
+	}
+
+	showModal() {
+		this.set({
+			[PopupModel.PROP_IS_MODAL]: true,
+			[PopupModel.PROP_POS_X]: '',
+			[PopupModel.PROP_POS_Y]: ''
+		});
+		this.show();
 	}
 
 	hide() {
 		this.set({
-			isVisible: false
+			[PopupModel.PROP_IS_VISIBLE]: false
 		});
 	}
 
@@ -44,13 +58,23 @@ class PopupModel extends State {
 	}
 
 	move(dx, dy) {
-		let {posX, posY} = this.get('posX', 'posY');
+		let {posX, posY} = this.get(PopupModel.PROP_POS_X, PopupModel.PROP_POS_Y);
 
-		posX += dx;
-		posY += dy;
+		this.moveTo(posX + dx, posY + dy);
+	}
 
-		this.set({posX, posY});
+	moveTo(x, y) {
+		this.set({
+			[PopupModel.PROP_POS_X]: x,
+			[PopupModel.PROP_POS_Y]: y
+		});
 	}
 }
+
+PopupModel.PROP_POS_X = 'posX';
+PopupModel.PROP_POS_Y = 'posY';
+PopupModel.PROP_IS_MODAL = 'isModal';
+PopupModel.PROP_IS_VISIBLE = 'isVisible';
+PopupModel.PROP_IS_DRAGGABLE = 'isDraggable';
 
 export default PopupModel;
