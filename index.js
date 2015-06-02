@@ -1,5 +1,7 @@
-import PopupModel from 'src/Popup/PopupModel';
 import Popup from 'src/Popup/Popup';
+import PopupModel from 'src/Popup/PopupModel';
+import PopupView from 'src/Popup/PopupView';
 
 export default Popup;
-export {PopupModel as PopupModel};
+export {PopupModel};
+export {PopupView};

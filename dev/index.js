@@ -1,4 +1,4 @@
-import Popup from '../src/Popup/Popup';
+import Popup from '../src/Popup/PopupView';
 
 let messagePopup = new Popup(document.querySelector('.popup-message'));
 let anotherPopup = new Popup(document.querySelector('.popup-oneMore'));

@@ -2,7 +2,6 @@
 
 import interact from 'interact';
 import State from '../State/State';
-import PopupManager from '../PopupManager/PopupManager';
 
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
@@ -13,14 +12,14 @@ const DEFAULT_POPUP_STATE = {
 	dragStep: 5
 };
 
-
-let popupManager = new PopupManager();
-
 class PopupModel extends State {
-	constructor(initialState) {
+	constructor(initialState, manager) {
 		let state = Object.assign({}, DEFAULT_POPUP_STATE, initialState);
 
 		super();
+
+		manager.register(this);
+		this._manager = manager;
 		this.set(state);
 	}
 
@@ -37,11 +36,11 @@ class PopupModel extends State {
 	}
 
 	toFront() {
-		popupManager.toFront(this);
+		this._manager.toFront(this);
 	}
 
 	toBack() {
-		popupManager.toBack(this);
+		this._manager.toBack(this);
 	}
 
 	move(dx, dy) {
@@ -54,5 +53,4 @@ class PopupModel extends State {
 	}
 }
 
-export default window.PopupModel = PopupModel;
-export {popupManager as popupManager};
+export default PopupModel;

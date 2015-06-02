@@ -1,8 +1,9 @@
 'use strict';
 
 import PopupModel from './PopupModel';
-import {popupManager as popupManager} from './PopupModel';
+import PopupManager from './PopupManager';
 
+let popupManager = new PopupManager();
 
 describe('PopupModel', () => {
 
@@ -11,14 +12,14 @@ describe('PopupModel', () => {
 	});
 
 	it('should be invisible by default', () => {
-		let popup = new PopupModel();
+		let popup = new PopupModel({}, popupManager);
 
 		expect(popup._state.isVisible).toBe(false);
 	});
 
 	describe('#show', () => {
 		it('should show popup', () => {
-			let popup = new PopupModel();
+			let popup = new PopupModel({}, popupManager);
 
 			popup.show();
 
@@ -28,7 +29,7 @@ describe('PopupModel', () => {
 
 	describe('#hide', () => {
 		it('should hide popup', () => {
-			let popup = new PopupModel();
+			let popup = new PopupModel({}, popupManager);
 
 			popup.hide();
 
@@ -38,7 +39,7 @@ describe('PopupModel', () => {
 
 	describe('#move', () => {
 		it('should change position according provided deltas', () => {
-			let popup =  new PopupModel();
+			let popup =  new PopupModel({}, popupManager);
 
 			popup._state.posX = 100;
 			popup._state.posY = 105;
@@ -52,8 +53,8 @@ describe('PopupModel', () => {
 
 	describe('#toFront', () => {
 		it('should move to front trough popupManager', () => {
-			let firstPopup = new PopupModel();
-			let secondPopup = new PopupModel();
+			let firstPopup = new PopupModel({}, popupManager);
+			let secondPopup = new PopupModel({}, popupManager);
 
 			firstPopup.show();
 			secondPopup.show();
@@ -67,8 +68,8 @@ describe('PopupModel', () => {
 
 	describe('#toBack', () => {
 		it('should move to back trough popupManager', () => {
-			let firstPopup = new PopupModel();
-			let secondPopup = new PopupModel();
+			let firstPopup = new PopupModel({}, popupManager);
+			let secondPopup = new PopupModel({}, popupManager);
 
 			firstPopup.show();
 			secondPopup.show();

@@ -1,5 +1,5 @@
 'use strict';
-import PopupModel from '../Popup/PopupModel';
+import PopupModel from './PopupModel';
 
 class PopupManager {
 

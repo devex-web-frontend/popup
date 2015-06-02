@@ -1,7 +1,7 @@
 'use strict';
 
 import PopupManager from './PopupManager';
-import PopupModel from '../Popup/PopupModel';
+import PopupModel from './PopupModel';
 import Emitter from 'emitter';
 
 
