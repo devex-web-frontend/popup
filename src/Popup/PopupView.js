@@ -40,17 +40,15 @@ const DRAGGABLE_OPTIONS = {
 class PopupView{
 
 	/**
-	 * @param {Object} [options]
-	 * @param {HTMLElement} [element]
+	 * @param {HTMLElement} element
+	 * @param {Object} model
 	 */
-	constructor(element, options) {
+	constructor(element, model) {
 
 		this.elements = (element instanceof HTMLElement) ? getPopupElements(element) : createPopupElements(element);
 
-		this._model = new PopupModel();
+		this._model = model;
 		this._initModelListeners();
-		this._model.set(options);
-
 		this._initDraggables();
 		this._initUIListeners();
 	}

@@ -1,7 +1,7 @@
-import Popup from '../src/Popup/PopupView';
+import Popup from '../index';
 
-let messagePopup = new Popup(document.querySelector('.popup-message'));
-let anotherPopup = new Popup(document.querySelector('.popup-oneMore'));
+let messagePopup = Popup.createPopup(document.querySelector('.popup-message'));
+let anotherPopup = Popup.createPopup(document.querySelector('.popup-oneMore'));
 
 let rectangle = document.getElementById('rectangle');
 
@@ -23,7 +23,7 @@ document.body.addEventListener('click', function(e) {
 			messagePopup.showModal();
 			break;
 		case 'createPopupFromCfg':
-			let popup = window.cfgPopup =  new Popup({
+			let popup = window.cfgPopup =  Popup.createPopup({
 				title: 'Test title from cfg',
 				content: '<a href="http://google.com">google.com</a>',
 				buttons: [
