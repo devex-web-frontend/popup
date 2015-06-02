@@ -9,63 +9,77 @@ class PopupManager {
 		this.isZIndexManagementEnabled = true;
 	}
 
-	register(item) {
-		this._list.push(item);
+	register(popup) {
+		this._list.push(popup);
 
-		item.on(`${PopupModel.E_CHANGE}:isVisible`, (isVisible) => {
+		popup.on(`${PopupModel.E_CHANGE}:isVisible`, (isVisible) => {
 			if (this.isZIndexManagementEnabled) {
 				if (isVisible) {
-					this._pushToStack(item);
+					this._pushToStack(popup);
 				} else {
-					this._removeFromStack(item);
+					this._removeFromStack(popup);
 				}
 				this._notifyAll();
 			}
 		});
 	}
 
-	deregister(item) {
-		removeItemFromArray(item, this._list);
+	deregister(popup) {
+		removeItemFromArray(popup, this._list);
 	}
 
-	getPosition(item) {
-		return this._stack.indexOf(item);
+	disableZIndexManagement() {
+		this.isZIndexManagementEnabled = false;
 	}
 
-	toFront(item) {
-		this._removeFromStack(item);
-		this._pushToStack(item);
-		this._notifyAll();
+	enableZIndexManagement() {
+		this.isZIndexManagementEnabled = true;
 	}
 
-	toBack(item) {
-		this._removeFromStack(item);
-		this._stack.unshift(item);
-		this._notifyAll();
+	getPosition(popup) {
+		return this._stack.indexOf(popup);
+	}
+
+	toFront(popup) {
+		if (this.isZIndexManagementEnabled) {
+			this._removeFromStack(popup);
+			this._pushToStack(popup);
+			this._notifyAll();
+		}
+	}
+
+	toBack(popup) {
+		if (this.isZIndexManagementEnabled) {
+			this._removeFromStack(popup);
+			this._stack.unshift(popup);
+			this._notifyAll();
+		}
 	}
 
 	hideAll() {
-
+		this._list.forEach((popup) => {
+			popup.hide();
+		});
 	}
 
-	_pushToStack(item) {
-		this._stack.push(item);
-		return this.getPosition(item);
+	_pushToStack(popup) {
+		this._stack.push(popup);
+		return this.getPosition(popup);
 	}
 
-	_removeFromStack(item) {
-		removeItemFromArray(item, this._stack);
+	_removeFromStack(popup) {
+		removeItemFromArray(popup, this._stack);
 	}
 
 	_notifyAll() {
-		this._stack.forEach((item) => {
-			item.set(PopupManager.PROP_ORDER_POSITION, this.getPosition(item));
+		this._stack.forEach((popup) => {
+			popup.set(PopupManager.PROP_ORDER_POSITION, this.getPosition(popup));
 		});
 	}
 }
 
-function removeItemFromArray(item, array) {
-	let index = array.indexOf(item);
+function removeItemFromArray(popup, array) {
+	let index = array.indexOf(popup);
 
 	array.splice(index, 1);
 }

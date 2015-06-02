@@ -1,12 +1,13 @@
 'use strict';
 
 import PopupModel from './PopupModel';
+import {popupManager as popupManager} from './PopupModel';
 
 
 describe('PopupModel', () => {
 
 	afterEach(() => {
-		PopupModel.hideAll();
+		popupManager.hideAll();
 	});
 
 	it('should be invisible by default', () => {
@@ -23,20 +24,6 @@ describe('PopupModel', () => {
 
 			expect(popup._state.isVisible).toBe(true);
 		});
-
-		xit('should set orderPosition of popup element', () => {
-			let firstPopup = new PopupModel();
-			let secondPopup = new PopupModel();
-
-			spyOn(firstPopup, 'set');
-			spyOn(secondPopup, 'set');
-
-			firstPopup.show();
-			secondPopup.show();
-
-			expect(firstPopup.set).toHaveBeenCalledWith('orderPosition', 0);
-			expect(secondPopup.set).toHaveBeenCalledWith('orderPosition', 1);
-		});
 	});
 
 	describe('#hide', () => {
@@ -46,19 +33,6 @@ describe('PopupModel', () => {
 			popup.hide();
 
 			expect(popup._state.isVisible).toBe(false);
-		});
-
-		xit('should update orderPosition of one of popups have been closed', () => {
-			let firstPopup = new PopupModel();
-			let secondPopup = new PopupModel();
-
-			firstPopup.show();
-			secondPopup.show();
-
-			spyOn(secondPopup, 'set');
-			firstPopup.hide();
-
-			expect(secondPopup.set).toHaveBeenCalledWith('orderPosition', 0);
 		});
 	});
 
@@ -76,121 +50,34 @@ describe('PopupModel', () => {
 		});
 	});
 
-	describe('#hideAll', () => {
-		it('should hide all popups', () => {
-			let firstPopup = new PopupModel({isVisible: true});
-			let secondPopup = new PopupModel({isVisible: true});
-
-			PopupModel.hideAll();
-
-			expect(firstPopup._state.isVisible).toBe(false);
-			expect(secondPopup._state.isVisible).toBe(false);
-		});
-	});
-
-	xdescribe('#toFront', () => {
-		it('should set orderPosition of popup element', () => {
+	describe('#toFront', () => {
+		it('should move to front trough popupManager', () => {
 			let firstPopup = new PopupModel();
 			let secondPopup = new PopupModel();
 
 			firstPopup.show();
 			secondPopup.show();
-			spyOn(firstPopup, 'set');
-			spyOn(secondPopup, 'set');
+			spyOn(popupManager, 'toFront');
 
 			firstPopup.toFront();
 
-			expect(firstPopup.set).toHaveBeenCalled();
-			expect(firstPopup.set.calls.mostRecent().args).toEqual(['orderPosition', 1]);
+			expect(popupManager.toFront.calls.mostRecent().args[0]).toBe(firstPopup);
 		});
 	});
 
-	xdescribe('#toBack', () => {
-		it('should set orderPosition of popup element', () => {
+	describe('#toBack', () => {
+		it('should move to back trough popupManager', () => {
 			let firstPopup = new PopupModel();
 			let secondPopup = new PopupModel();
 
 			firstPopup.show();
 			secondPopup.show();
-			spyOn(firstPopup, 'set');
-			spyOn(secondPopup, 'set');
+
+			spyOn(popupManager, 'toBack');
 
 			secondPopup.toBack();
 
-			expect(secondPopup.set).toHaveBeenCalled();
-			expect(secondPopup.set.calls.mostRecent().args).toEqual(['orderPosition', 0]);
-		});
-	});
-
-	xdescribe('if z-index management disabled', () => {
-		beforeEach(() => {
-			PopupModel.disableZIndexManagement();
-		});
-		afterEach(() => {
-			PopupModel.enableZIndexManagement();
-		});
-
-		describe('#show', () => {
-			it('should not set orderPosition of popup element', () => {
-				let firstPopup = new PopupModel();
-				let secondPopup = new PopupModel();
-
-				spyOn(firstPopup, 'set');
-				spyOn(secondPopup, 'set');
-
-				firstPopup.show();
-				secondPopup.show();
-
-				expect(firstPopup.set).not.toHaveBeenCalledWith('orderPosition', 0);
-				expect(secondPopup.set).not.toHaveBeenCalledWith('orderPosition', 1);
-			});
-
-			describe('#toBack', () => {
-				it('should not set orderPosition of popup element', () => {
-					let firstPopup = new PopupModel();
-					let secondPopup = new PopupModel();
-
-					firstPopup.show();
-					secondPopup.show();
-					spyOn(firstPopup, 'set');
-					spyOn(secondPopup, 'set');
-
-					secondPopup.toBack();
-
-					expect(secondPopup.set).not.toHaveBeenCalled();
-				});
-			});
-
-			describe('#hide', () => {
-				it('should not update orderPosition of one of popups have been closed', () => {
-					let firstPopup = new PopupModel();
-					let secondPopup = new PopupModel();
-
-					firstPopup.show();
-					secondPopup.show();
-
-					spyOn(secondPopup, 'set');
-					firstPopup.hide();
-
-					expect(secondPopup.set).not.toHaveBeenCalledWith('orderPosition', 0);
-				});
-			});
-
-			describe('#toFront', () => {
-				it('should set orderPosition of popup element', () => {
-					let firstPopup = new PopupModel();
-					let secondPopup = new PopupModel();
-
-					firstPopup.show();
-					secondPopup.show();
-					spyOn(firstPopup, 'set');
-					spyOn(secondPopup, 'set');
-
-					firstPopup.toFront();
-
-					expect(firstPopup.set).not.toHaveBeenCalled();
-				});
-			});
+			expect(popupManager.toBack.calls.mostRecent().args[0]).toBe(secondPopup);
 		});
 	});
 });
