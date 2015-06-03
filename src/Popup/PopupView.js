@@ -58,7 +58,7 @@ class PopupView{
 		let elements = this.elements;
 		let draggableOptions = Object.assign({
 			enabled: this._model.get('isDraggable')
-		}, DRAGGABLE_OPTIONS, {origin: elements.popup});
+		}, DRAGGABLE_OPTIONS, {origin: elements.popupElement});
 
 		this._draggables = elements.dragTriggers.map((trigger) => {
 			let draggable = new Draggable(trigger, draggableOptions);
@@ -71,13 +71,13 @@ class PopupView{
 	}
 
 	_initUIListeners() {
-		let {popup} = this.elements;
+		let {popupElement} = this.elements;
 
-		popup.addEventListener('mousedown', () => {
+		popupElement.addEventListener('mousedown', () => {
 			this._model.toFront();
 		});
 
-		popup.addEventListener('click', (e) => {
+		popupElement.addEventListener('click', (e) => {
 			//TODO: Use get ascendant from DXJS lib
 			if (e.target.hasAttribute(A_POPUP_CLOSE)) {
 				this._model.hide();
@@ -102,21 +102,21 @@ class PopupView{
 	}
 
 	_initModelListeners() {
-		let {window} = this.elements;
+		let {popupWindow} = this.elements;
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_POS_X}`, (x) => {
-			window.style.left = (x === '') ? x : x + 'px';
+			popupWindow.style.left = (x === '') ? x : x + 'px';
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_POS_Y}`, (y) => {
-			window.style.top = (y === '') ? y : y + 'px';
+			popupWindow.style.top = (y === '') ? y : y + 'px';
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_VISIBLE}`, (isVisible) => {
-			let {popup} = this.elements;
+			let {popupElement} = this.elements;
 
-			popup.classList.add(isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
-			popup.classList.remove(!isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
+			popupElement.classList.add(isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
+			popupElement.classList.remove(!isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_DRAGGING_ALLOWED}`, (isDraggingAllowed) => {
@@ -124,33 +124,33 @@ class PopupView{
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupManager.PROP_ORDER_POSITION}`, (position) => {
-			let {popup} = this.elements;
+			let {popupElement} = this.elements;
 
-			popup.style.zIndex = Z_INDEX_OFFSET + position;
+			popupElement.style.zIndex = Z_INDEX_OFFSET + position;
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_MODAL}`, (isModal) => {
-			let {popup} = this.elements;
+			let {popupElement} = this.elements;
 
-			return isModal ? popup.classList.add(CN_POPUP_MODAL) : popup.classList.remove(CN_POPUP_MODAL);
+			return isModal ? popupElement.classList.add(CN_POPUP_MODAL) : popupElement.classList.remove(CN_POPUP_MODAL);
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_CENTERED}`, (isCentered) => {
-			let {popup} = this.elements;
+			let {popupElement} = this.elements;
 
-			return isCentered ? popup.classList.add(CN_POPUP_CENTERED) : popup.classList.remove(CN_POPUP_CENTERED);
+			return isCentered ? popupElement.classList.add(CN_POPUP_CENTERED) : popupElement.classList.remove(CN_POPUP_CENTERED);
 		});
 	}
 }
 
 function getPopupElements(popupElement) {
-	let window = popupElement.querySelector(S_POPUP_WINDOW);
+	let popupWindow = popupElement.querySelector(S_POPUP_WINDOW);
 	let dragTriggers = Array.from(popupElement.querySelectorAll(`[${A_POPUP_DRAG_TRIGGER}]`));
 	let closers = Array.from(popupElement.querySelectorAll(`[${A_POPUP_CLOSE}]`));
 
 	return {
-		popup: popupElement,
-		window,
+		popupElement,
+		popupWindow,
 		dragTriggers,
 		closers
 	};
@@ -159,7 +159,7 @@ function getPopupElements(popupElement) {
 function createPopupElements(config) {
 	let popup = document.createElement('section');
 
-	popup.innerHTML = `
+	popupElement.innerHTML = `
 		<div class="${CN_POPUP_WINDOW}">
 			<header ${A_POPUP_DRAG_TRIGGER} class="popup--header">
 				<h6 class="${CN_POPUP_TITLE}">${config.title}</h6>
@@ -174,12 +174,12 @@ function createPopupElements(config) {
 			</footer>
 		</div>`;
 
-	let popupContent = popup.querySelector(`.${CN_POPUP_CONTENT}`);
+	let popupContent = popupElement.querySelector(`.${CN_POPUP_CONTENT}`);
 
 	popupContent.innerHTML = config.content;
 
 	if (config.buttons) {
-		let popupButtons = popup.querySelector(`.${CN_POPUP_BUTTONS}`);
+		let popupButtons = popupElement.querySelector(`.${CN_POPUP_BUTTONS}`);
 
 		config.buttons.map(createBtnFromConfig)
 			.forEach(btn => popupButtons.appendChild(btn));
