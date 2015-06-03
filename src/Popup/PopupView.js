@@ -9,13 +9,13 @@ const CN_POPUP = 'popup';
 const CN_POPUP_VISIBLE = `${CN_POPUP}-visible`;
 const CN_POPUP_HIDDEN = `${CN_POPUP}-hidden`;
 const CN_POPUP_MODAL = `${CN_POPUP}-modal`;
+const CN_POPUP_CENTERED = `${CN_POPUP}-centered`;
 const CN_POPUP_WINDOW = `${CN_POPUP}--window`;
 const CN_POPUP_TITLE = `${CN_POPUP}--title`;
 const CN_POPUP_CONTENT = `${CN_POPUP}--content`;
 const CN_POPUP_BUTTONS = `${CN_POPUP}--buttons`;
 
 const CN_BUTTON = 'button';
-
 
 const S_POPUP_WINDOW = `.${CN_POPUP_WINDOW}`;
 
@@ -54,82 +54,6 @@ class PopupView{
 		this._initUIListeners();
 	}
 
-	/**
-	 * Shows popup at center of window or element if it provided
-	 * @param {HTMLElement} [origin]
-	 */
-	showCentered(origin) {
-		let parentOffsetX = 0;
-		let parentOffsetY = 0;
-		let parentWidth = window.innerWidth;
-		let parentHeight = window.innerHeight;
-		let [popupWindowWidth, popupWindowHeight] = this.getWindowSizes();
-
-		if (origin) {
-			let bounds = origin.getBoundingClientRect();
-			parentWidth = bounds.width;
-			parentHeight = bounds.height;
-			parentOffsetX = bounds.left;
-			parentOffsetY = bounds.top;
-		}
-
-		let x = (parentWidth / 2) - (popupWindowWidth / 2) + parentOffsetX;
-		let y = (parentHeight / 2) - (popupWindowHeight / 2) + parentOffsetY;
-
-		this.show(x, y);
-	}
-
-	showModal() {
-		let {window} = this.elements;
-
-		window.style.top = '';
-		window.style.left = '';
-
-		this._setModalState();
-		this.showCentered();
-	}
-
-	/**
-	 * Computes and return popup window sizes
-	 * @returns [width:number, height:number]
-	 */
-	getWindowSizes() {
-		let {popup, window} = this.elements;
-		let isVisible = this._model.get('isVisible');
-
-		return isVisible ? helpers.getElementSizes(window) : helpers.getSizesOfHiddenElement(window, popup);
-	}
-
-	/**
-	 * hides popup
-	 */
-	hide() {
-		this._resetModalState();
-		this._model.hide();
-	}
-
-	disableDragging() {
-		this._model.set({
-			isDraggable: false
-		});
-	}
-
-	enableDragging() {
-		this._model.set({
-			isDraggable: true
-		});
-	}
-
-	_setModalState() {
-		this._model.set('isModal', true);
-		this._disableDragging();
-	}
-
-	_resetModalState() {
-		this._model.set('isModal', false);
-		this._enableDragging();
-	}
-
 	_initDraggables() {
 		let elements = this.elements;
 		let draggableOptions = Object.assign({
@@ -156,7 +80,7 @@ class PopupView{
 		popup.addEventListener('click', (e) => {
 			//TODO: Use get ascendant from DXJS lib
 			if (e.target.hasAttribute(A_POPUP_CLOSE)) {
-				this.hide();
+				this._model.hide();
 			}
 		});
 	}
@@ -181,11 +105,11 @@ class PopupView{
 		let {window} = this.elements;
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_POS_X}`, (x) => {
-			window.style.left = x + 'px';
+			window.style.left = (x === '') ? x : x + 'px';
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_POS_Y}`, (y) => {
-			window.style.top = y + 'px';
+			window.style.top = (y === '') ? y : y + 'px';
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_VISIBLE}`, (isVisible) => {
@@ -195,8 +119,8 @@ class PopupView{
 			popup.classList.remove(!isVisible ? CN_POPUP_VISIBLE : CN_POPUP_HIDDEN);
 		});
 
-		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_DRAGGABLE}`, (isDraggable) => {
-			return (isDraggable) ? this._enableDragging() : this._disableDragging();
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_DRAGGING_ALLOWED}`, (isDraggingAllowed) => {
+			return (isDraggingAllowed) ? this._enableDragging() : this._disableDragging();
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupManager.PROP_ORDER_POSITION}`, (position) => {
@@ -209,6 +133,12 @@ class PopupView{
 			let {popup} = this.elements;
 
 			return isModal ? popup.classList.add(CN_POPUP_MODAL) : popup.classList.remove(CN_POPUP_MODAL);
+		});
+
+		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_CENTERED}`, (isCentered) => {
+			let {popup} = this.elements;
+
+			return isCentered ? popup.classList.add(CN_POPUP_CENTERED) : popup.classList.remove(CN_POPUP_CENTERED);
 		});
 	}
 }

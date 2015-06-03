@@ -47,8 +47,6 @@ describe('PopupModel', () => {
 
 			expect(popup._state.isVisible).toBe(true);
 			expect(popup._state.isModal).toBe(true);
-			expect(popup._state.posX).toBe('');
-			expect(popup._state.posY).toBe('');
 		});
 	});
 
@@ -56,9 +54,26 @@ describe('PopupModel', () => {
 		it('should hide popup', () => {
 			let popup = new PopupModel({}, popupManager);
 
+			popup.show();
 			popup.hide();
 
 			expect(popup._state.isVisible).toBe(false);
+		});
+
+		it('should reset popup', () => {
+			let popup = new PopupModel({}, popupManager);
+
+			popup._state.isModal = true;
+			popup._state.isCentered = true;
+			popup._state.posX = 10;
+			popup._state.posY = 15;
+
+			popup.hide();
+
+			expect(popup._state.isModal).toBe(false);
+			expect(popup._state.isCentered).toBe(false);
+			expect(popup._state.posX).toBe('');
+			expect(popup._state.posY).toBe('');
 		});
 	});
 

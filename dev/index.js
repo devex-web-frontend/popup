@@ -3,21 +3,16 @@ import Popup from '../index';
 let messagePopup = Popup.createPopup(document.querySelector('.popup-message'));
 let anotherPopup = Popup.createPopup(document.querySelector('.popup-oneMore'));
 
-let rectangle = document.getElementById('rectangle');
-
 document.body.addEventListener('click', function(e) {
 	switch (e.target.getAttribute('id')) {
 		case 'showPopup':
 			messagePopup.show();
 			break;
 		case 'showOneMorePopup':
-			anotherPopup.show(50, 50);
+			anotherPopup.showAt(50, 50);
 			break;
 		case 'showCenteredPopup':
 			messagePopup.showCentered();
-			break;
-		case 'showCenteredPopupByElement':
-			messagePopup.showCentered(rectangle);
 			break;
 		case 'showModalPopup':
 			messagePopup.showModal();

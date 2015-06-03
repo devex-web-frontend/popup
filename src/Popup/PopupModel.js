@@ -6,6 +6,8 @@ import State from '../State/State';
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
 	isDraggable: true,
+	isCentered: false,
+	isDraggingAllowed: true,
 	isModal: false,
 	posX: 0,
 	posY: 0,
@@ -20,6 +22,8 @@ class PopupModel extends State {
 
 		manager.register(this);
 		this._manager = manager;
+		this.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_DRAGGABLE}`, this._toggleDraggingAllowed);
+		this.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_MODAL}`, this._toggleDraggingAllowed);
 		this.set(state);
 	}
 
@@ -36,16 +40,26 @@ class PopupModel extends State {
 
 	showModal() {
 		this.set({
-			[PopupModel.PROP_IS_MODAL]: true,
-			[PopupModel.PROP_POS_X]: '',
-			[PopupModel.PROP_POS_Y]: ''
+			[PopupModel.PROP_IS_MODAL]: true
 		});
+		this.show();
+	}
+
+	showCentered() {
+		this.set({
+			[PopupModel.PROP_IS_CENTERED]: true
+		});
+
 		this.show();
 	}
 
 	hide() {
 		this.set({
-			[PopupModel.PROP_IS_VISIBLE]: false
+			[PopupModel.PROP_IS_VISIBLE]: false,
+			[PopupModel.PROP_IS_CENTERED]: false,
+			[PopupModel.PROP_IS_MODAL]: false,
+			[PopupModel.PROP_POS_X]: '',
+			[PopupModel.PROP_POS_Y]: ''
 		});
 	}
 
@@ -60,6 +74,12 @@ class PopupModel extends State {
 	move(dx, dy) {
 		let {posX, posY} = this.get(PopupModel.PROP_POS_X, PopupModel.PROP_POS_Y);
 
+		[posX, posY] = [posX, posY].map((num) => {
+			num = parseInt(num);
+
+			return isNaN(num) ? 0 : num;
+		});
+
 		this.moveTo(posX + dx, posY + dy);
 	}
 
@@ -69,6 +89,14 @@ class PopupModel extends State {
 			[PopupModel.PROP_POS_Y]: y
 		});
 	}
+
+	_toggleDraggingAllowed() {
+		let {isDraggable, isModal} = this.get(PopupModel.PROP_IS_MODAL, PopupModel.PROP_IS_DRAGGABLE);
+
+		this.set({
+			[PopupModel.PROP_IS_DRAGGING_ALLOWED]: isDraggable && !isModal
+		});
+	}
 }
 
 PopupModel.PROP_POS_X = 'posX';
@@ -76,5 +104,7 @@ PopupModel.PROP_POS_Y = 'posY';
 PopupModel.PROP_IS_MODAL = 'isModal';
 PopupModel.PROP_IS_VISIBLE = 'isVisible';
 PopupModel.PROP_IS_DRAGGABLE = 'isDraggable';
+PopupModel.PROP_IS_CENTERED = 'isCentered';
+PopupModel.PROP_IS_DRAGGING_ALLOWED = 'isDraggingAllowed';
 
 export default PopupModel;

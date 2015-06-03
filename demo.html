@@ -66,16 +66,15 @@
 			background: rgba(0,0,0, .3);
 		}
 
-		#rectangle {
-			position: absolute;
-			width: 500px;
-			height: 300px;
-			top: 100px;
-			left: 200px;
-
-			background: rgba(75, 0, 130, .3);
+		.popup-modal .popup--window,
+		.popup-centered {
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
 		}
-
+		.popup-centered .popup--window {
+			position: relative;
+		}
 	</style>
 </head>
 <body>
@@ -138,8 +137,7 @@
 		</div>
 	</section>
 	<button id="showPopup">Show popup</button>
-	<button id="showCenteredPopup">Show popup at window center</button>
-	<button id="showCenteredPopupByElement">Show popup at the rectangle center</button>
+	<button id="showCenteredPopup">Show centerd popup</button>
 	<button id="showModalPopup">Show modal popup</button>
 	<br/>
 	<button id="showOneMorePopup">Show another popup</button>

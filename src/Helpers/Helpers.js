@@ -4,14 +4,14 @@ export default {
 	 * @param {HTMLElement} element
 	 * @param {HTMLElement} [hiddenParent]
 	 */
-	getSizesOfHiddenElement(element, hiddenParent) {
+	getBoundsOfHiddenElement(element, hiddenParent) {
 		let hiddenElement = hiddenParent || element;
 
 		hiddenElement.style.visibility = 'hidden';
 		hiddenElement.style.display = 'block';
 		hiddenElement.style.position = 'absolute';
 
-		let [width, height] = this.getElementSizes(element);
+		let [width, height] = this.getBounds(element);
 
 		hiddenElement.style.visibility = '';
 		hiddenElement.style.display = '';
@@ -24,7 +24,7 @@ export default {
 	 * Compute sizes of visible elements
 	 * @param {HTMLElement} element
 	 */
-	getElementSizes(element) {
+	getBounds(element) {
 		let {width, height} = element.getBoundingClientRect();
 
 		return [width, height];
