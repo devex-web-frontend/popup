@@ -2,6 +2,7 @@
 
 import interact from 'interact';
 import State from '../State/State';
+import {defaultPopupManager} from './PopupManager';
 
 const DEFAULT_POPUP_STATE = {
 	isVisible: false,
@@ -15,7 +16,7 @@ const DEFAULT_POPUP_STATE = {
 };
 
 class PopupModel extends State {
-	constructor(initialState, manager) {
+	constructor(initialState, manager = defaultPopupManager) {
 		let state = Object.assign({}, DEFAULT_POPUP_STATE, initialState);
 
 		super();

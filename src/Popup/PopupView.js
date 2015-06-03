@@ -38,15 +38,34 @@ const DRAGGABLE_OPTIONS = {
 		maxPerElement: Infinity
 };
 
+function tplDefault(data) {
+	return `
+		<div class="${CN_POPUP_WINDOW}">
+			<header ${A_POPUP_DRAG_TRIGGER} class="popup--header">
+				<h6 class="${CN_POPUP_TITLE}">${data.title}</h6>
+				<span ${A_POPUP_CLOSE} class="popup--close">×</span>
+			</header>
+			<div class="${CN_POPUP_CONTENT}">
+			</div>
+			<footer class="popup--footer">
+				<div class="${CN_POPUP_BUTTONS}">
+
+				</div>
+			</footer>
+		</div>`;
+}
+
 class PopupView{
 
 	/**
-	 * @param {HTMLElement} element
+	 * @param {HTMLElement|Object} element
 	 * @param {Object} model
+	 * @param {Function} [template]
 	 */
-	constructor(element, model) {
+	constructor(element, model, template) {
+		template = template || tplDefault;
 
-		this.elements = (element instanceof HTMLElement) ? getPopupElements(element) : createPopupElements(element);
+		this.elements = (element instanceof HTMLElement) ? getPopupElements(element) : createPopupElements(element, template);
 
 		this._model = model;
 		this._initModelListeners();
@@ -156,23 +175,10 @@ function getPopupElements(popupElement) {
 	};
 }
 
-function createPopupElements(config) {
-	let popup = document.createElement('section');
+function createPopupElements(config, template) {
+	let popupElement = document.createElement('section');
 
-	popupElement.innerHTML = `
-		<div class="${CN_POPUP_WINDOW}">
-			<header ${A_POPUP_DRAG_TRIGGER} class="popup--header">
-				<h6 class="${CN_POPUP_TITLE}">${config.title}</h6>
-				<span ${A_POPUP_CLOSE} class="popup--close">×</span>
-			</header>
-			<div class="${CN_POPUP_CONTENT}">
-			</div>
-			<footer class="popup--footer">
-				<div class="${CN_POPUP_BUTTONS}">
-
-				</div>
-			</footer>
-		</div>`;
+	popupElement.innerHTML = template(config);
 
 	let popupContent = popupElement.querySelector(`.${CN_POPUP_CONTENT}`);
 
@@ -184,8 +190,10 @@ function createPopupElements(config) {
 		config.buttons.map(createBtnFromConfig)
 			.forEach(btn => popupButtons.appendChild(btn));
 	}
-	document.body.appendChild(popup);
-	return getPopupElements(popup);
+
+	document.body.appendChild(popupElement);
+
+	return getPopupElements(popupElement);
 }
 
 function createBtnFromConfig(cfg) {

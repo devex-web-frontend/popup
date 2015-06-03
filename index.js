@@ -1,4 +1,4 @@
-import Popup from 'src/Popup/Popup';
+import Popup from 'src/Popup/PopupFactory';
 import PopupModel from 'src/Popup/PopupModel';
 import PopupView from 'src/Popup/PopupView';
 

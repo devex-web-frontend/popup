@@ -87,3 +87,4 @@ function removeItemFromArray(popup, array) {
 PopupManager.PROP_ORDER_POSITION = 'orderPosition';
 
 export default PopupManager;
+export let defaultPopupManager = new PopupManager();
