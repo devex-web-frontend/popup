@@ -1,0 +1,18 @@
+{
+  "name": "popup",
+  "main": "index.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/devex-web-frontend/popup",
+  "authors": [
+    "devexperts"
+  ],
+  "description": "popup component",
+  "license": "MPL-2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
