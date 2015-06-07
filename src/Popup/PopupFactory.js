@@ -5,7 +5,7 @@ import PopupView from './PopupView';
 import PopupManager from './PopupManager';
 
 export default window.PopupFactory = {
-	createPopup(element, options = {}) {
+	create(element, options = {}) {
 		let popupModel = new PopupModel(options);
 		let popupView = new PopupView(element, popupModel);
 

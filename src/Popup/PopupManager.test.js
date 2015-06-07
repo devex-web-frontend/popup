@@ -206,7 +206,7 @@ describe('PopupManager', () => {
 
 			manager.disableZIndexManagement();
 
-			expect(manager.isZIndexManagementEnabled).toBe(false);
+			expect(manager._isZIndexManagementEnabled).toBe(false);
 		});
 	});
 
@@ -217,7 +217,7 @@ describe('PopupManager', () => {
 			manager.disableZIndexManagement();
 			manager.enableZIndexManagement();
 
-			expect(manager.isZIndexManagementEnabled).toBe(true);
+			expect(manager._isZIndexManagementEnabled).toBe(true);
 		});
 	});
 

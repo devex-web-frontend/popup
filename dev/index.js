@@ -1,7 +1,7 @@
-import Popup from '../index';
+import PopupFactory from '../index';
 
-let messagePopup = Popup.createPopup(document.querySelector('.popup-message'));
-let anotherPopup = Popup.createPopup(document.querySelector('.popup-oneMore'));
+let messagePopup = PopupFactory.create(document.querySelector('.popup-message'));
+let anotherPopup = PopupFactory.create(document.querySelector('.popup-oneMore'));
 
 document.body.addEventListener('click', function(e) {
 	switch (e.target.getAttribute('id')) {
@@ -18,7 +18,7 @@ document.body.addEventListener('click', function(e) {
 			messagePopup.showModal();
 			break;
 		case 'createPopupFromCfg':
-			let popup = window.cfgPopup =  Popup.createPopup({
+			let popup = window.cfgPopup =  PopupFactory.create({
 				title: 'Test title from cfg',
 				content: '<a href="http://google.com">google.com</a>',
 				buttons: [

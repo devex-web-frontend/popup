@@ -107,5 +107,6 @@ PopupModel.PROP_IS_VISIBLE = 'isVisible';
 PopupModel.PROP_IS_DRAGGABLE = 'isDraggable';
 PopupModel.PROP_IS_CENTERED = 'isCentered';
 PopupModel.PROP_IS_DRAGGING_ALLOWED = 'isDraggingAllowed';
+PopupModel.PROP_ORDER_POSITION = 'orderPosition';
 
 export default PopupModel;

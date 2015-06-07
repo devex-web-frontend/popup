@@ -38,23 +38,6 @@ const DRAGGABLE_OPTIONS = {
 		maxPerElement: Infinity
 };
 
-function tplDefault(data) {
-	return `
-		<div class="${CN_POPUP_WINDOW}">
-			<header ${A_POPUP_DRAG_TRIGGER} class="popup--header">
-				<h6 class="${CN_POPUP_TITLE}">${data.title}</h6>
-				<span ${A_POPUP_CLOSE} class="popup--close">×</span>
-			</header>
-			<div class="${CN_POPUP_CONTENT}">
-			</div>
-			<footer class="popup--footer">
-				<div class="${CN_POPUP_BUTTONS}">
-
-				</div>
-			</footer>
-		</div>`;
-}
-
 class PopupView{
 
 	/**
@@ -76,7 +59,7 @@ class PopupView{
 	_initDraggables() {
 		let elements = this.elements;
 		let draggableOptions = Object.assign({
-			enabled: this._model.get('isDraggable')
+			enabled: this._model.get(PopupModel.PROP_IS_DRAGGABLE)
 		}, DRAGGABLE_OPTIONS, {origin: elements.popupElement});
 
 		this._draggables = elements.dragTriggers.map((trigger) => {
@@ -105,7 +88,7 @@ class PopupView{
 	}
 
 	_enableDragging() {
-		let isDraggable = this._model.get('isDraggable');
+		let isDraggable = this._model.get(PopupModel.PROP_IS_DRAGGABLE);
 
 		if (isDraggable) {
 			this._draggables.forEach((draggable) => {
@@ -160,6 +143,22 @@ class PopupView{
 			return isCentered ? popupElement.classList.add(CN_POPUP_CENTERED) : popupElement.classList.remove(CN_POPUP_CENTERED);
 		});
 	}
+}
+
+function tplDefault(data) {
+	return `<div class="${CN_POPUP_WINDOW}">
+		<header ${A_POPUP_DRAG_TRIGGER} class="popup--header">
+			<h6 class="${CN_POPUP_TITLE}">${data.title}</h6>
+			<span ${A_POPUP_CLOSE} class="popup--close">×</span>
+		</header>
+		<div class="${CN_POPUP_CONTENT}">
+		</div>
+		<footer class="popup--footer">
+			<div class="${CN_POPUP_BUTTONS}">
+
+			</div>
+		</footer>
+	</div>`;
 }
 
 function getPopupElements(popupElement) {

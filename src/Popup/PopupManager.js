@@ -6,14 +6,14 @@ class PopupManager {
 	constructor() {
 		this._stack = [];
 		this._list = [];
-		this.isZIndexManagementEnabled = true;
+		this._isZIndexManagementEnabled = true;
 	}
 
 	register(popup) {
 		this._list.push(popup);
 
-		popup.on(`${PopupModel.E_CHANGE}:isVisible`, (isVisible) => {
-			if (this.isZIndexManagementEnabled) {
+		popup.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_VISIBLE}`, (isVisible) => {
+			if (this._isZIndexManagementEnabled) {
 				if (isVisible) {
 					this._pushToStack(popup);
 				} else {
@@ -24,16 +24,16 @@ class PopupManager {
 		});
 	}
 
-	deregister(popup) {
+	unregister(popup) {
 		removeItemFromArray(popup, this._list);
 	}
 
 	disableZIndexManagement() {
-		this.isZIndexManagementEnabled = false;
+		this._isZIndexManagementEnabled = false;
 	}
 
 	enableZIndexManagement() {
-		this.isZIndexManagementEnabled = true;
+		this._isZIndexManagementEnabled = true;
 	}
 
 	getPosition(popup) {
@@ -41,7 +41,7 @@ class PopupManager {
 	}
 
 	toFront(popup) {
-		if (this.isZIndexManagementEnabled) {
+		if (this._isZIndexManagementEnabled) {
 			this._removeFromStack(popup);
 			this._pushToStack(popup);
 			this._notifyAll();
@@ -49,7 +49,7 @@ class PopupManager {
 	}
 
 	toBack(popup) {
-		if (this.isZIndexManagementEnabled) {
+		if (this._isZIndexManagementEnabled) {
 			this._removeFromStack(popup);
 			this._stack.unshift(popup);
 			this._notifyAll();
@@ -73,7 +73,7 @@ class PopupManager {
 
 	_notifyAll() {
 		this._stack.forEach((popup) => {
-			popup.set(PopupManager.PROP_ORDER_POSITION, this.getPosition(popup));
+			popup.set(PopupModel.PROP_ORDER_POSITION, this.getPosition(popup));
 		});
 	}
 }
@@ -83,8 +83,6 @@ function removeItemFromArray(popup, array) {
 
 	array.splice(index, 1);
 }
-
-PopupManager.PROP_ORDER_POSITION = 'orderPosition';
 
 export default PopupManager;
 export let defaultPopupManager = new PopupManager();
