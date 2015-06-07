@@ -212,4 +212,4 @@ function createBtnFromConfig(cfg) {
 	return btn;
 }
 
-export default window.PopupView = PopupView
+export default PopupView
