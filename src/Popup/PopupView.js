@@ -14,6 +14,7 @@ const CN_POPUP_WINDOW = `${CN_POPUP}--window`;
 const CN_POPUP_TITLE = `${CN_POPUP}--title`;
 const CN_POPUP_CONTENT = `${CN_POPUP}--content`;
 const CN_POPUP_BUTTONS = `${CN_POPUP}--buttons`;
+const M_DRAGGABLE = `${CN_POPUP}-draggable`;
 
 const CN_BUTTON = 'button';
 
@@ -58,8 +59,9 @@ class PopupView{
 
 	_initDraggables() {
 		let elements = this.elements;
+		let isDraggable = this._model.get(PopupModel.PROP_IS_DRAGGABLE);
 		let draggableOptions = Object.assign({
-			enabled: this._model.get(PopupModel.PROP_IS_DRAGGABLE)
+			enabled: this._model.get(isDraggable)
 		}, DRAGGABLE_OPTIONS, {origin: elements.popupElement});
 
 		this._draggables = elements.dragTriggers.map((trigger) => {
@@ -70,6 +72,10 @@ class PopupView{
 
 			return draggable;
 		});
+
+		if (isDraggable) {
+			elements.popupElement.classList.add(M_DRAGGABLE);
+		}
 	}
 
 	_initUIListeners() {
@@ -122,7 +128,15 @@ class PopupView{
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupModel.PROP_IS_DRAGGING_ALLOWED}`, (isDraggingAllowed) => {
-			return (isDraggingAllowed) ? this._enableDragging() : this._disableDragging();
+			let {popupElement} = this.elements;
+
+			if (isDraggingAllowed) {
+				this._enableDragging();
+				popupElement.classList.add(M_DRAGGABLE);
+			} else {
+				this._disableDragging();
+				popupElement.classList.remove(M_DRAGGABLE);
+			}
 		});
 
 		this._model.on(`${PopupModel.E_CHANGE}:${PopupManager.PROP_ORDER_POSITION}`, (position) => {
