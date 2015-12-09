@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start",
-    "install": "jspm install",
-    "lint": "eslint --ext .js,.jsx ."
+    "install": "jspm install && bower install",
+    "lint": "eslint --ext .js,.jsx .",
+    "bower": "bower"
   },
   "author": "devexperts",
   "license": "MPL-2",
   "devDependencies": {
+    "bower": "^1.7.0",
     "core-js": "^0.9.12",
     "eslint": "^0.21.2",
     "isparta": "^3.0.3",

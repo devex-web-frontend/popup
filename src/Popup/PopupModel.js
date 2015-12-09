@@ -1,6 +1,5 @@
 'use strict';
 
-import interact from 'interact';
 import State from '../State/State';
 import {defaultPopupManager} from './PopupManager';
 
