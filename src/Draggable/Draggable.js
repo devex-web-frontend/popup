@@ -15,7 +15,8 @@ class Draggable {
 
 		this._interactable = interact(element)
 			.origin(origin)
-			.draggable(options);
+			.draggable(options)
+			.styleCursor(false);
 	}
 
 	onMove(handler) {
