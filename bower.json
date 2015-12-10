@@ -1,7 +1,7 @@
 {
   "name": "popup",
   "main": "index.js",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "homepage": "https://github.com/devex-web-frontend/popup",
   "authors": [
     "devexperts"
