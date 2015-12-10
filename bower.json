@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "emitter": "jhermsmeier/emitter.js#~1.5.2",
+    "emitter": "jhermsmeier/emitter.js#~1.5.3",
     "interact": "taye/interact.js#~1.2.6"
   }
 }
