@@ -24,6 +24,8 @@ describe('PopupModel', () => {
 			popup.show();
 
 			expect(popup._state.isVisible).toBe(true);
+			expect(popup._state.posX).toBe('');
+			expect(popup._state.posY).toBe('');
 		});
 	});
 
@@ -72,8 +74,6 @@ describe('PopupModel', () => {
 
 			expect(popup._state.isModal).toBe(false);
 			expect(popup._state.isCentered).toBe(false);
-			expect(popup._state.posX).toBe('');
-			expect(popup._state.posY).toBe('');
 		});
 	});
 

@@ -29,13 +29,18 @@ class PopupModel extends State {
 
 	show() {
 		this.set({
-			[PopupModel.PROP_IS_VISIBLE]: true
+			[PopupModel.PROP_IS_VISIBLE]: true,
+			[PopupModel.PROP_POS_X]: '',
+			[PopupModel.PROP_POS_Y]: ''
 		});
 	}
 
 	showAt(x, y) {
-		this.moveTo(x, y);
-		this.show();
+		this.set({
+			[PopupModel.PROP_IS_VISIBLE]: true,
+			[PopupModel.PROP_POS_X]: x,
+			[PopupModel.PROP_POS_Y]: y
+		});
 	}
 
 	showModal() {
@@ -57,9 +62,7 @@ class PopupModel extends State {
 		this.set({
 			[PopupModel.PROP_IS_VISIBLE]: false,
 			[PopupModel.PROP_IS_CENTERED]: false,
-			[PopupModel.PROP_IS_MODAL]: false,
-			[PopupModel.PROP_POS_X]: '',
-			[PopupModel.PROP_POS_Y]: ''
+			[PopupModel.PROP_IS_MODAL]: false
 		});
 	}
 
